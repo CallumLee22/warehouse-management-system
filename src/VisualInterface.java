@@ -6,7 +6,7 @@ public class VisualInterface {
     public void mainMenu() {
         while (true) {
             System.out.print("""
-
+                        \n
                         Welcome to the Warehouse Management System
                         ------------------------------------------
                         Please select an option:
@@ -61,16 +61,16 @@ public class VisualInterface {
     private void supplierManagementMenu() {
         while (true) {
             System.out.print("""
-                    Supplier Management
-                    ------------------------
-                    Please select an option:
+                        Supplier Management
+                        ------------------------
+                        Please select an option:
 
-                    1. View suppliers
-                    2. Add supplier
-                    3. Update supplier
-                    4. Remove supplier
-                    5. Back to main menu
-                """);
+                        1. View suppliers
+                        2. Add supplier
+                        3. Update supplier
+                        4. Remove supplier
+                        5. Back to main menu
+                    """);
 
             String menuChoice = scanner.nextLine();
 
@@ -84,6 +84,7 @@ public class VisualInterface {
                 case "3":
                     break;
                 case "4":
+                    removeSupplierMenu();
                     break;
                 case "5":
                     return;
@@ -94,21 +95,26 @@ public class VisualInterface {
         }
     }
 
+    private void displaySuppliers() {
+        if (SupplierService.getSuppliers().isEmpty()) {
+            System.out.println("No suppliers found.");
+            return;
+        }
+
+        for (int i = 0; i < SupplierService.getSuppliers().size(); i++) {
+            System.out.println("[" + (SupplierService.getSuppliers().get(i).getId()) + "] "
+                    + SupplierService.getSuppliers().get(i).getName() + " - "
+                    + SupplierService.getSuppliers().get(i).getPhoneNumber());
+        }
+    }
+
     private void viewSuppliersMenu() {
         System.out.print("""
                     View Suppliers
                     ------------------------
                 """);
 
-        if (SupplierManagement.getSuppliers().isEmpty()) {
-            System.out.println("No suppliers found.");
-            return;
-        }
-        
-        for (int i = 0; i < SupplierManagement.getSuppliers().size(); i++) {
-            System.out.println((i + 1) + ". " + SupplierManagement.getSuppliers().get(i).getName()
-                    + " - " + SupplierManagement.getSuppliers().get(i).getPhoneNumber());
-        }
+        displaySuppliers();
     }
 
     private void addSupplierMenu() {
@@ -147,6 +153,18 @@ public class VisualInterface {
         }
 
         supplierManagementMenu();
+    }
+
+    private void removeSupplierMenu() {
+        System.out.print("""
+                    Remove Supplier
+                    -------------------
+                """);
+
+        displaySuppliers();
+        System.out.println("Enter the ID of the supplier you want to remove:");
+        int userChoice = scanner.nextInt();
+        SupplierService.removeSupplier(userChoice);
     }
 
     private void financialReportsMenu() {

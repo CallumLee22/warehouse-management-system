@@ -1,13 +1,23 @@
 import java.util.ArrayList;
 
 public class SupplierManagement {
-    private static ArrayList<Supplier> suppliers = new ArrayList<Supplier>();
+    private ArrayList<Supplier> suppliers = new ArrayList<Supplier>();
+    private int nextId = 1;
 
-    public static void addSupplier(String name, String phoneNumber) {
-        suppliers.add(new Supplier(0, name, phoneNumber, null));
+    public SupplierManagement() {
+        
     }
 
-    public static ArrayList<Supplier> getSuppliers() {
+    public void addSupplier(String name, String phoneNumber) {
+        suppliers.add(new Supplier(nextId, name, phoneNumber, null));
+        nextId++;
+    }
+
+    public ArrayList<Supplier> getSuppliers() {
         return suppliers;
+    }
+
+    public void removeSupplier(int id) {
+        suppliers.removeIf(supplier -> supplier.getId() == id);
     }
 }

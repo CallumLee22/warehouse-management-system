@@ -13,7 +13,7 @@ public class Supplier {
         this.productsAvailable = productsAvailable;
     }
 
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 
