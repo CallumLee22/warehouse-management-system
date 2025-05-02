@@ -101,10 +101,10 @@ public class VisualInterface {
             return;
         }
 
-        for (int i = 0; i < SupplierService.getSuppliers().size(); i++) {
-            System.out.println("[" + (SupplierService.getSuppliers().get(i).getId()) + "] "
-                    + SupplierService.getSuppliers().get(i).getName() + " - "
-                    + SupplierService.getSuppliers().get(i).getPhoneNumber());
+        for (Integer key : SupplierService.getSuppliers().keySet()) {
+            System.out.println("[" + key + "] "
+                    + SupplierService.getSuppliers().get(key).getName() + " - "
+                    + SupplierService.getSuppliers().get(key).getPhoneNumber());
         }
     }
 
@@ -163,8 +163,13 @@ public class VisualInterface {
 
         displaySuppliers();
         System.out.println("Enter the ID of the supplier you want to remove:");
-        int userChoice = scanner.nextInt();
-        SupplierService.removeSupplier(userChoice);
+        try {
+            int userChoice = scanner.nextInt();
+            SupplierService.removeSupplier(userChoice);
+        }
+        catch (SupplierNotFoundException supplierNotFound) {
+            System.out.println(supplierNotFound.getMessage());
+        }
     }
 
     private void financialReportsMenu() {

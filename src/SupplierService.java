@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SupplierService {
     private static SupplierManagement supplierManagement = new SupplierManagement();
@@ -11,15 +11,19 @@ public class SupplierService {
         }
     }
 
-    public static ArrayList<Supplier> getSuppliers() {
+    public static HashMap<Integer, Supplier> getSuppliers() {
         return supplierManagement.getSuppliers();
     }
 
     public static void removeSupplier(int id) {
-        if (id < 0 || id >= supplierManagement.getSuppliers().size()) {
+        if (!supplierManagement.getSuppliers().containsKey(id)) {
             System.out.println("Invalid supplier ID.");
             return;
         }
         supplierManagement.removeSupplier(id);
+    }
+
+    public static void updateSupplierPhoneNumber(int id, String phoneNumber) {
+        supplierManagement.updatePhoneNumber(id, phoneNumber);
     }
 }
