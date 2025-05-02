@@ -22,7 +22,7 @@ public class SupplierManagement {
     }
 
     public void removeSupplier(int id) {
-        if (suppliers.containsKey(id)) {
+        if (!suppliers.containsKey(id)) {
             System.out.println("Invalid supplier ID.");
             return;
         }
