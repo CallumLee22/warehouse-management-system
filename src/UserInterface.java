@@ -1,7 +1,8 @@
 import java.util.Scanner;
 
-public class VisualInterface {
+public class UserInterface {
     private final Scanner scanner = new Scanner(System.in);
+    private static SupplierManagement supplierManagement = new SupplierManagement();
 
     public void mainMenu() {
         while (true) {
@@ -82,6 +83,7 @@ public class VisualInterface {
                     addSupplierMenu();
                     break;
                 case "3":
+                    updateSupplierMenu();
                     break;
                 case "4":
                     removeSupplierMenu();
@@ -96,15 +98,15 @@ public class VisualInterface {
     }
 
     private void displaySuppliers() {
-        if (SupplierService.getSuppliers().isEmpty()) {
+        if (supplierManagement.getSuppliers().isEmpty()) {
             System.out.println("No suppliers found.");
             return;
         }
 
-        for (Integer key : SupplierService.getSuppliers().keySet()) {
-            System.out.println("[" + key + "] "
-                    + SupplierService.getSuppliers().get(key).getName() + " - "
-                    + SupplierService.getSuppliers().get(key).getPhoneNumber());
+        for (Integer key : supplierManagement.getSuppliers().keySet()) {
+            System.out
+                    .println("[" + key + "] " + supplierManagement.getSuppliers().get(key).getName()
+                            + " - " + supplierManagement.getSuppliers().get(key).getPhoneNumber());
         }
     }
 
@@ -142,7 +144,7 @@ public class VisualInterface {
 
             if (confirmation.equalsIgnoreCase("y")) {
                 confirm = true;
-                SupplierService.addSupplier(supplierName, supplierPhoneNumber);
+                supplierManagement.addSupplier(supplierName, supplierPhoneNumber);
                 break;
 
             } else if (confirmation.equalsIgnoreCase("n")) {
@@ -150,6 +152,44 @@ public class VisualInterface {
             }
 
             System.out.println("Invalid input, try again");
+        }
+
+        supplierManagementMenu();
+    }
+
+    private void updateSupplierMenu() {
+        System.out.print("""
+                    Update Supplier
+                    -------------------
+                """);
+
+        displaySuppliers();
+        System.out.println("Enter the ID of the supplier you want to update:");
+        int idToUpdate = scanner.nextInt();
+        System.out.print("""
+                    1. Name
+                    2. Phone Number
+                    Select what you would like to update:
+                """);
+        int userChoice = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Enter the new value:");
+        String newValue = scanner.nextLine();
+
+        try {
+            switch (userChoice) {
+                case 1:
+                    supplierManagement.updateName(idToUpdate, newValue);
+                    break;
+                case 2:
+                    supplierManagement.updatePhoneNumber(idToUpdate, newValue);
+                    break;
+                default:
+                    break;
+            }
+        } catch (SupplierNotFoundException supplierNotFound) {
+            System.out.println(supplierNotFound.getMessage());
         }
 
         supplierManagementMenu();
@@ -165,11 +205,12 @@ public class VisualInterface {
         System.out.println("Enter the ID of the supplier you want to remove:");
         try {
             int userChoice = scanner.nextInt();
-            SupplierService.removeSupplier(userChoice);
-        }
-        catch (SupplierNotFoundException supplierNotFound) {
+            supplierManagement.removeSupplier(userChoice);
+        } catch (SupplierNotFoundException supplierNotFound) {
             System.out.println(supplierNotFound.getMessage());
         }
+
+        supplierManagementMenu();
     }
 
     private void financialReportsMenu() {
