@@ -16,4 +16,12 @@ public class ProductManagement {
     public HashMap<Integer, Product> getProducts() {
         return products;
     }
+
+    public void removeProduct(int id) {
+        if (!products.containsKey(id)) {
+            System.out.println("Invalid product ID.");
+            return;
+        }
+        products.remove(id);
+    }
 }
