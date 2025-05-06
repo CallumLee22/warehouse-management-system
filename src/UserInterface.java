@@ -49,6 +49,7 @@ public class UserInterface {
     private void inventoryManagementMenu() {
         while (true) {
             System.out.print("""
+                \n
                 Inventory Management
                 ------------------------
                 Please select an option:
@@ -105,6 +106,7 @@ public class UserInterface {
 
     private void viewProductsMenu() {
         System.out.print("""
+                \n
                 View Products
                 ------------------------
                 """);
@@ -114,6 +116,7 @@ public class UserInterface {
 
     private void addProductMenu() {
         System.out.print("""
+                \n
                 Add New Product
                 -------------------
                 Enter the product's name:
@@ -151,6 +154,7 @@ public class UserInterface {
 
     private void removeProductMenu() {
         System.out.print("""
+                \n
                 Remove Product
                 -------------------
                 """);
@@ -164,6 +168,7 @@ public class UserInterface {
     private void supplierManagementMenu() {
         while (true) {
             System.out.print("""
+                    \n
                     Supplier Management
                     ------------------------
                     Please select an option:
@@ -214,6 +219,7 @@ public class UserInterface {
 
     private void viewSuppliersMenu() {
         System.out.print("""
+                \n
                 View Suppliers
                 ------------------------
                 """);
@@ -224,6 +230,7 @@ public class UserInterface {
     private void addSupplierMenu() {
 
         System.out.print("""
+                \n
                 Add New Supplier
                 -------------------
                 Enter the supplier's name:
@@ -261,6 +268,7 @@ public class UserInterface {
 
     private void updateSupplierMenu() {
         System.out.print("""
+                \n
                 Update Supplier
                 -------------------
                 """);
@@ -299,6 +307,7 @@ public class UserInterface {
 
     private void removeSupplierMenu() {
         System.out.print("""
+                \n
                 Remove Supplier
                 -------------------
                 """);
@@ -317,6 +326,7 @@ public class UserInterface {
 
     private void financialReportsMenu() {
         System.out.print("""
+                \n
                 Financial Reports
                 ------------------------
                 Please select an option:
@@ -329,6 +339,7 @@ public class UserInterface {
 
     private void customerOrdersMenu() {
         System.out.print("""
+                \n
                 Customer Orders
                 ------------------------
                 Please select an option:
