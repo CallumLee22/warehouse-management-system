@@ -54,8 +54,8 @@ public class UserInterface {
                 Please select an option:
 
                 1. View products
-                2. Add products
-                3. Remove products
+                2. Add product
+                3. Remove product
                 4. Update product details
                 5. Order stock
                 6. Back to main menu
@@ -65,12 +65,13 @@ public class UserInterface {
 
             switch (menuChoice) {
                 case "1":
-                    viewProducts();
+                    viewProductsMenu();
                     break;
                 case "2":
-                    addProductsMenu();
+                    addProductMenu();
                     break;
                 case "3":
+                    removeProductMenu();
                     break;
                 case "4":
                     break;
@@ -102,7 +103,7 @@ public class UserInterface {
         }
     }
 
-    private void viewProducts() {
+    private void viewProductsMenu() {
         System.out.print("""
                 View Products
                 ------------------------
@@ -111,7 +112,7 @@ public class UserInterface {
         displayProducts();
     }
 
-    private void addProductsMenu() {
+    private void addProductMenu() {
         System.out.print("""
                 Add New Product
                 -------------------
@@ -141,11 +142,23 @@ public class UserInterface {
                 break;
 
             } else if (confirmation.equalsIgnoreCase("n")) {
-                addProductsMenu();
+                addProductMenu();
             }
 
             System.out.println("Invalid input, try again");
         }
+    }
+
+    private void removeProductMenu() {
+        System.out.print("""
+                Remove Product
+                -------------------
+                """);
+
+        displayProducts();
+        System.out.println("Enter the ID of the product you want to remove:");
+        int userChoice = scanner.nextInt();
+        productManagement.removeProduct(userChoice);
     }
 
     private void supplierManagementMenu() {
