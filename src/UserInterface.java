@@ -2,21 +2,22 @@ import java.util.Scanner;
 
 public class UserInterface {
     private final Scanner scanner = new Scanner(System.in);
-    private static SupplierManagement supplierManagement = new SupplierManagement();
+    private static final SupplierManagement supplierManagement = new SupplierManagement();
+    private final ProductManagement productManagement = new ProductManagement();
 
     public void mainMenu() {
         while (true) {
             System.out.print("""
-                        \n
-                        Welcome to the Warehouse Management System
-                        ------------------------------------------
-                        Please select an option:
+                    \n
+                    Welcome to the Warehouse Management System
+                    ------------------------------------------
+                    Please select an option:
 
-                        1. Inventory Management
-                        2. Supplier Management
-                        3. Customer Orders
-                        4. Financial Reports
-                        5. Exit
+                    1. Inventory Management
+                    2. Supplier Management
+                    3. Customer Orders
+                    4. Financial Reports
+                    5. Exit
                     """);
 
             String userChoice = scanner.nextLine();
@@ -46,31 +47,119 @@ public class UserInterface {
     }
 
     private void inventoryManagementMenu() {
-        System.out.print("""
-                    Inventory Management
-                    ------------------------
-                    Please select an option:
+        while (true) {
+            System.out.print("""
+                Inventory Management
+                ------------------------
+                Please select an option:
 
-                    1. View stock
-                    2. Add stock
-                    3. Remove stock
-                    4. Order stock
-                    5. Back to main menu
+                1. View products
+                2. Add products
+                3. Remove products
+                4. Update product details
+                5. Order stock
+                6. Back to main menu
                 """);
+
+            String menuChoice = scanner.nextLine();
+
+            switch (menuChoice) {
+                case "1":
+                    viewProducts();
+                    break;
+                case "2":
+                    addProductsMenu();
+                    break;
+                case "3":
+                    break;
+                case "4":
+                    break;
+                case "5":
+                    break;
+                case "6":
+                    return;
+                default:
+                    System.err.println("Invalid choice, try again");
+                    break;
+            }
+        }
+    }
+
+    private void displayProducts() {
+        if (productManagement.getProducts().isEmpty()) {
+            System.out.println("No products found.");
+            return;
+        }
+
+        for (Integer key : productManagement.getProducts().keySet()) {
+            System.out.println("[" + key + "] ");
+            System.out.println("-------------------");
+            System.out.println("Name: " + productManagement.getProducts().get(key).getName());
+            System.out.println("Stock: " + productManagement.getProducts().get(key).getQuantityInStock());
+            System.out.println("Sell Price: £" + productManagement.getProducts().get(key).getSellPrice());
+            System.out.println("Buy Price: £" + productManagement.getProducts().get(key).getBuyPrice());
+            System.out.println("-------------------");
+        }
+    }
+
+    private void viewProducts() {
+        System.out.print("""
+                View Products
+                ------------------------
+                """);
+
+        displayProducts();
+    }
+
+    private void addProductsMenu() {
+        System.out.print("""
+                Add New Product
+                -------------------
+                Enter the product's name:
+                """);
+        String productName = scanner.nextLine();
+
+        System.out.println("Enter the product's sell price:");
+        double productSellPrice = scanner.nextDouble();
+
+        System.out.println("Enter the product's buy price:");
+        double productBuyPrice = scanner.nextDouble();
+
+        System.out.println("Enter the product's initial stock:");
+        int productInitialStock = scanner.nextInt();
+
+        while (true) {
+            System.out.println("Do you want to add a product with these details? (y or n)");
+            System.out.println("Name: " + productName);
+            System.out.println("Sell Price: £" + productSellPrice);
+            System.out.println("Buy Price: £" + productBuyPrice);
+
+            String confirmation = scanner.nextLine();
+
+            if (confirmation.equalsIgnoreCase("y")) {
+                productManagement.addProduct(productName, productSellPrice, productBuyPrice, productInitialStock);
+                break;
+
+            } else if (confirmation.equalsIgnoreCase("n")) {
+                addProductsMenu();
+            }
+
+            System.out.println("Invalid input, try again");
+        }
     }
 
     private void supplierManagementMenu() {
         while (true) {
             System.out.print("""
-                        Supplier Management
-                        ------------------------
-                        Please select an option:
+                    Supplier Management
+                    ------------------------
+                    Please select an option:
 
-                        1. View suppliers
-                        2. Add supplier
-                        3. Update supplier
-                        4. Remove supplier
-                        5. Back to main menu
+                    1. View suppliers
+                    2. Add supplier
+                    3. Update supplier
+                    4. Remove supplier
+                    5. Back to main menu
                     """);
 
             String menuChoice = scanner.nextLine();
@@ -112,8 +201,8 @@ public class UserInterface {
 
     private void viewSuppliersMenu() {
         System.out.print("""
-                    View Suppliers
-                    ------------------------
+                View Suppliers
+                ------------------------
                 """);
 
         displaySuppliers();
@@ -122,9 +211,9 @@ public class UserInterface {
     private void addSupplierMenu() {
 
         System.out.print("""
-                    Add New Supplier
-                    -------------------
-                    Enter the supplier's name:
+                Add New Supplier
+                -------------------
+                Enter the supplier's name:
                 """);
 
         String supplierName = scanner.nextLine();
@@ -159,17 +248,17 @@ public class UserInterface {
 
     private void updateSupplierMenu() {
         System.out.print("""
-                    Update Supplier
-                    -------------------
+                Update Supplier
+                -------------------
                 """);
 
         displaySuppliers();
         System.out.println("Enter the ID of the supplier you want to update:");
         int idToUpdate = scanner.nextInt();
         System.out.print("""
-                    1. Name
-                    2. Phone Number
-                    Select what you would like to update:
+                1. Name
+                2. Phone Number
+                Select what you would like to update:
                 """);
         int userChoice = scanner.nextInt();
         scanner.nextLine();
@@ -197,8 +286,8 @@ public class UserInterface {
 
     private void removeSupplierMenu() {
         System.out.print("""
-                    Remove Supplier
-                    -------------------
+                Remove Supplier
+                -------------------
                 """);
 
         displaySuppliers();
@@ -215,24 +304,24 @@ public class UserInterface {
 
     private void financialReportsMenu() {
         System.out.print("""
-                    Financial Reports
-                    ------------------------
-                    Please select an option:
+                Financial Reports
+                ------------------------
+                Please select an option:
 
-                    1. View reports
-                    2. Create Report
-                    3. Back to main menu
+                1. View reports
+                2. Create Report
+                3. Back to main menu
                 """);
     }
 
     private void customerOrdersMenu() {
         System.out.print("""
-                    Customer Orders
-                    ------------------------
-                    Please select an option:
+                Customer Orders
+                ------------------------
+                Please select an option:
 
-                    1. View Orders
-                    2. Back to main menu
+                1. View Orders
+                2. Back to main menu
                 """);
     }
 }

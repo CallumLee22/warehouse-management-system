@@ -1,20 +1,14 @@
 public class Product {
-    private final int id;
     private String name;
     private int quantityInStock;
     private double sellPrice;
     private double buyPrice;
 
-    public Product(int id, String name, int quantityInStock, double sellPrice, double buyPrice) {
-        this.id = id;
+    public Product(String name, double sellPrice, double buyPrice, int quantityInStock) {
         this.name = name;
         this.quantityInStock = quantityInStock;
         this.sellPrice = sellPrice;
         this.buyPrice = buyPrice;
-    }
-
-    public int getId() {
-        return this.id;
     }
 
     public String getName() {
