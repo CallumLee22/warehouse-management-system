@@ -88,18 +88,17 @@ public class UserInterface {
     }
 
     private void displayProducts() {
-        if (productManagement.getProducts().isEmpty()) {
+        if (productManagement.getInventoryProductHashMap().isEmpty()) {
             System.out.println("No products found.");
             return;
         }
 
-        for (Integer key : productManagement.getProducts().keySet()) {
+        for (Integer key : productManagement.getInventoryProductHashMap().keySet()) {
             System.out.println("[" + key + "] ");
             System.out.println("-------------------");
-            System.out.println("Name: " + productManagement.getProducts().get(key).getName());
-            System.out.println("Stock: " + productManagement.getProducts().get(key).getQuantityInStock());
-            System.out.println("Sell Price: £" + productManagement.getProducts().get(key).getSellPrice());
-            System.out.println("Buy Price: £" + productManagement.getProducts().get(key).getBuyPrice());
+            System.out.println("Name: " + productManagement.getInventoryProductHashMap().get(key).getName());
+            System.out.println("Stock: " + productManagement.getInventoryProductHashMap().get(key).getQuantityInStock());
+            System.out.println("Price: £" + productManagement.getInventoryProductHashMap().get(key).getPrice());
             System.out.println("-------------------");
         }
     }

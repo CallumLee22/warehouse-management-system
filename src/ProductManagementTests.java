@@ -11,7 +11,7 @@ public class ProductManagementTests {
     public void testAddProduct() {
         productManagement.addProduct("Test product", 12.50, 10, 55);
 
-        HashMap<Integer, Product> products = productManagement.getProducts();
+        HashMap<Integer, InventoryProduct> products = productManagement.getInventoryProductHashMap();
 
         assertEquals(1, products.size());
         assertEquals("Test product", products.get(1).getName());
@@ -22,7 +22,7 @@ public class ProductManagementTests {
         productManagement.addProduct("Test product", 12.50, 10, 55);
         productManagement.removeProduct(1);
 
-        HashMap<Integer, Product> products = productManagement.getProducts();
+        HashMap<Integer, InventoryProduct> products = productManagement.getInventoryProductHashMap();
 
         assertEquals(0, products.size());
     }

@@ -1,14 +1,10 @@
 public class Product {
     private String name;
-    private int quantityInStock;
-    private double sellPrice;
-    private double buyPrice;
+    private double price;
 
-    public Product(String name, double sellPrice, double buyPrice, int quantityInStock) {
+    public Product(String name, double price) {
         this.name = name;
-        this.quantityInStock = quantityInStock;
-        this.sellPrice = sellPrice;
-        this.buyPrice = buyPrice;
+        this.price = price;
     }
 
     public String getName() {
@@ -19,27 +15,11 @@ public class Product {
         this.name = newName;
     }
 
-    public int getQuantityInStock() {
-        return this.quantityInStock;
+    public double getPrice() {
+        return this.price;
     }
 
-    public void setQuantityInStock(int newQuantity) {
-        this.quantityInStock = newQuantity;
-    }
-
-    public double getSellPrice() {
-        return this.sellPrice;
-    }
-
-    public void setSellPrice(double newSellPrice) {
-        this.sellPrice = newSellPrice;
-    }
-
-    public double getBuyPrice() {
-        return this.buyPrice;
-    }
-
-    public void setBuyPrice(double newBuyPrice) {
-        this.buyPrice = newBuyPrice;
+    public void setPrice(double newPrice) {
+        this.price = newPrice;
     }
 }
