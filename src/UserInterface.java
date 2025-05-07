@@ -49,6 +49,7 @@ public class UserInterface {
     private void inventoryManagementMenu() {
         while (true) {
             System.out.print("""
+                \n
                 Inventory Management
                 ------------------------
                 Please select an option:
@@ -74,6 +75,7 @@ public class UserInterface {
                     removeProductMenu();
                     break;
                 case "4":
+                    updateProductDetailsMenu();
                     break;
                 case "5":
                     break;
@@ -87,24 +89,24 @@ public class UserInterface {
     }
 
     private void displayProducts() {
-        if (productManagement.getProducts().isEmpty()) {
+        if (productManagement.getInventoryProducts().isEmpty()) {
             System.out.println("No products found.");
             return;
         }
 
-        for (Integer key : productManagement.getProducts().keySet()) {
+        for (Integer key : productManagement.getInventoryProducts().keySet()) {
             System.out.println("[" + key + "] ");
             System.out.println("-------------------");
-            System.out.println("Name: " + productManagement.getProducts().get(key).getName());
-            System.out.println("Stock: " + productManagement.getProducts().get(key).getQuantityInStock());
-            System.out.println("Sell Price: £" + productManagement.getProducts().get(key).getSellPrice());
-            System.out.println("Buy Price: £" + productManagement.getProducts().get(key).getBuyPrice());
+            System.out.println("Name: " + productManagement.getInventoryProducts().get(key).getName());
+            System.out.println("Stock: " + productManagement.getInventoryProducts().get(key).getQuantityInStock());
+            System.out.println("Price: £" + productManagement.getInventoryProducts().get(key).getPrice());
             System.out.println("-------------------");
         }
     }
 
     private void viewProductsMenu() {
         System.out.print("""
+                \n
                 View Products
                 ------------------------
                 """);
@@ -114,6 +116,7 @@ public class UserInterface {
 
     private void addProductMenu() {
         System.out.print("""
+                \n
                 Add New Product
                 -------------------
                 Enter the product's name:
@@ -121,10 +124,7 @@ public class UserInterface {
         String productName = scanner.nextLine();
 
         System.out.println("Enter the product's sell price:");
-        double productSellPrice = scanner.nextDouble();
-
-        System.out.println("Enter the product's buy price:");
-        double productBuyPrice = scanner.nextDouble();
+        double productPrice = scanner.nextDouble();
 
         System.out.println("Enter the product's initial stock:");
         int productInitialStock = scanner.nextInt();
@@ -132,13 +132,12 @@ public class UserInterface {
         while (true) {
             System.out.println("Do you want to add a product with these details? (y or n)");
             System.out.println("Name: " + productName);
-            System.out.println("Sell Price: £" + productSellPrice);
-            System.out.println("Buy Price: £" + productBuyPrice);
+            System.out.println("Price: £" + productPrice);
 
             String confirmation = scanner.nextLine();
 
             if (confirmation.equalsIgnoreCase("y")) {
-                productManagement.addProduct(productName, productSellPrice, productBuyPrice, productInitialStock);
+                productManagement.addProduct(productName, productPrice, productInitialStock);
                 break;
 
             } else if (confirmation.equalsIgnoreCase("n")) {
@@ -151,6 +150,7 @@ public class UserInterface {
 
     private void removeProductMenu() {
         System.out.print("""
+                \n
                 Remove Product
                 -------------------
                 """);
@@ -161,9 +161,50 @@ public class UserInterface {
         productManagement.removeProduct(userChoice);
     }
 
+    private void updateProductDetailsMenu() {
+        System.out.print("""
+                \n
+                Update Product Details
+                -------------------
+                """);
+        displayProducts();
+        System.out.println("Enter the ID of the product you want to update:");
+        int idToUpdate = scanner.nextInt();
+
+        System.out.print("""
+                1. Name
+                2. Price
+                Select what you would like to update:
+                """);
+        int userChoice = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Enter the new value:");
+
+        try {
+            switch (userChoice) {
+                case 1:
+                    String newName = scanner.nextLine();
+                    productManagement.updateName(idToUpdate, newName);
+                    break;
+                case 2:
+                    double newPrice = scanner.nextDouble();
+                    productManagement.updatePrice(idToUpdate, newPrice);
+                    break;
+                default:
+                    break;
+            }
+        } catch (SupplierNotFoundException supplierNotFound) {
+            System.out.println(supplierNotFound.getMessage());
+        }
+
+        inventoryManagementMenu();
+    }
+
     private void supplierManagementMenu() {
         while (true) {
             System.out.print("""
+                    \n
                     Supplier Management
                     ------------------------
                     Please select an option:
@@ -214,6 +255,7 @@ public class UserInterface {
 
     private void viewSuppliersMenu() {
         System.out.print("""
+                \n
                 View Suppliers
                 ------------------------
                 """);
@@ -224,6 +266,7 @@ public class UserInterface {
     private void addSupplierMenu() {
 
         System.out.print("""
+                \n
                 Add New Supplier
                 -------------------
                 Enter the supplier's name:
@@ -261,6 +304,7 @@ public class UserInterface {
 
     private void updateSupplierMenu() {
         System.out.print("""
+                \n
                 Update Supplier
                 -------------------
                 """);
@@ -299,6 +343,7 @@ public class UserInterface {
 
     private void removeSupplierMenu() {
         System.out.print("""
+                \n
                 Remove Supplier
                 -------------------
                 """);
@@ -317,6 +362,7 @@ public class UserInterface {
 
     private void financialReportsMenu() {
         System.out.print("""
+                \n
                 Financial Reports
                 ------------------------
                 Please select an option:
@@ -329,6 +375,7 @@ public class UserInterface {
 
     private void customerOrdersMenu() {
         System.out.print("""
+                \n
                 Customer Orders
                 ------------------------
                 Please select an option:
