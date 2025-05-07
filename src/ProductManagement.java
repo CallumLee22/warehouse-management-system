@@ -8,12 +8,12 @@ public class ProductManagement {
 
     }
 
-    public void addProduct(String name, double sellPrice, double buyPrice, int initialStock) {
-        inventoryProducts.put(nextId, new InventoryProduct(name, sellPrice, initialStock));
+    public void addProduct(String name, double price, int initialStock) {
+        inventoryProducts.put(nextId, new InventoryProduct(name, price, initialStock));
         nextId++;
     }
 
-    public HashMap<Integer, InventoryProduct> getInventoryProductHashMap() {
+    public HashMap<Integer, InventoryProduct> getInventoryProducts() {
         return inventoryProducts;
     }
 
@@ -23,5 +23,25 @@ public class ProductManagement {
             return;
         }
         inventoryProducts.remove(id);
+    }
+
+    public void updateName(int id, String newName) {
+        InventoryProduct product = inventoryProducts.get(id);
+        if (product != null) {
+            product.setName(newName);
+        } else {
+            throw new ProductNotFoundException(
+                    "Inventory product with ID " + id + " was not found when updating name");
+        }
+    }
+
+    public void updatePrice(int id, double newPrice) {
+        InventoryProduct product = inventoryProducts.get(id);
+        if (product != null) {
+            product.setPrice(newPrice);
+        } else {
+            throw new ProductNotFoundException(
+                    "Inventory product with ID " + id + " was not found when updating price");
+        }
     }
 }

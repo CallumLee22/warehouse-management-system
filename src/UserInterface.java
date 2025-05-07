@@ -75,6 +75,7 @@ public class UserInterface {
                     removeProductMenu();
                     break;
                 case "4":
+                    updateProductDetailsMenu();
                     break;
                 case "5":
                     break;
@@ -88,17 +89,17 @@ public class UserInterface {
     }
 
     private void displayProducts() {
-        if (productManagement.getInventoryProductHashMap().isEmpty()) {
+        if (productManagement.getInventoryProducts().isEmpty()) {
             System.out.println("No products found.");
             return;
         }
 
-        for (Integer key : productManagement.getInventoryProductHashMap().keySet()) {
+        for (Integer key : productManagement.getInventoryProducts().keySet()) {
             System.out.println("[" + key + "] ");
             System.out.println("-------------------");
-            System.out.println("Name: " + productManagement.getInventoryProductHashMap().get(key).getName());
-            System.out.println("Stock: " + productManagement.getInventoryProductHashMap().get(key).getQuantityInStock());
-            System.out.println("Price: £" + productManagement.getInventoryProductHashMap().get(key).getPrice());
+            System.out.println("Name: " + productManagement.getInventoryProducts().get(key).getName());
+            System.out.println("Stock: " + productManagement.getInventoryProducts().get(key).getQuantityInStock());
+            System.out.println("Price: £" + productManagement.getInventoryProducts().get(key).getPrice());
             System.out.println("-------------------");
         }
     }
@@ -123,10 +124,7 @@ public class UserInterface {
         String productName = scanner.nextLine();
 
         System.out.println("Enter the product's sell price:");
-        double productSellPrice = scanner.nextDouble();
-
-        System.out.println("Enter the product's buy price:");
-        double productBuyPrice = scanner.nextDouble();
+        double productPrice = scanner.nextDouble();
 
         System.out.println("Enter the product's initial stock:");
         int productInitialStock = scanner.nextInt();
@@ -134,13 +132,12 @@ public class UserInterface {
         while (true) {
             System.out.println("Do you want to add a product with these details? (y or n)");
             System.out.println("Name: " + productName);
-            System.out.println("Sell Price: £" + productSellPrice);
-            System.out.println("Buy Price: £" + productBuyPrice);
+            System.out.println("Price: £" + productPrice);
 
             String confirmation = scanner.nextLine();
 
             if (confirmation.equalsIgnoreCase("y")) {
-                productManagement.addProduct(productName, productSellPrice, productBuyPrice, productInitialStock);
+                productManagement.addProduct(productName, productPrice, productInitialStock);
                 break;
 
             } else if (confirmation.equalsIgnoreCase("n")) {
@@ -162,6 +159,46 @@ public class UserInterface {
         System.out.println("Enter the ID of the product you want to remove:");
         int userChoice = scanner.nextInt();
         productManagement.removeProduct(userChoice);
+    }
+
+    private void updateProductDetailsMenu() {
+        System.out.print("""
+                \n
+                Update Product Details
+                -------------------
+                """);
+        displayProducts();
+        System.out.println("Enter the ID of the product you want to update:");
+        int idToUpdate = scanner.nextInt();
+
+        System.out.print("""
+                1. Name
+                2. Price
+                Select what you would like to update:
+                """);
+        int userChoice = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Enter the new value:");
+
+        try {
+            switch (userChoice) {
+                case 1:
+                    String newName = scanner.nextLine();
+                    productManagement.updateName(idToUpdate, newName);
+                    break;
+                case 2:
+                    double newPrice = scanner.nextDouble();
+                    productManagement.updatePrice(idToUpdate, newPrice);
+                    break;
+                default:
+                    break;
+            }
+        } catch (SupplierNotFoundException supplierNotFound) {
+            System.out.println(supplierNotFound.getMessage());
+        }
+
+        inventoryManagementMenu();
     }
 
     private void supplierManagementMenu() {
