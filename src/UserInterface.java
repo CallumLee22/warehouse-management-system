@@ -1,9 +1,11 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserInterface {
     private final Scanner scanner = new Scanner(System.in);
     private static final SupplierManagement supplierManagement = new SupplierManagement();
     private final ProductManagement productManagement = new ProductManagement();
+    private final OrderManagement orderManagement = new OrderManagement(productManagement);
 
     public void mainMenu() {
         while (true) {
@@ -15,7 +17,7 @@ public class UserInterface {
 
                     1. Inventory Management
                     2. Supplier Management
-                    3. Customer Orders
+                    3. View Orders
                     4. Financial Reports
                     5. Exit
                     """);
@@ -30,7 +32,7 @@ public class UserInterface {
                     supplierManagementMenu();
                     break;
                 case "3":
-                    customerOrdersMenu();
+                    orderStockMenu();
                     break;
                 case "4":
                     financialReportsMenu();
@@ -78,6 +80,7 @@ public class UserInterface {
                     updateProductDetailsMenu();
                     break;
                 case "5":
+                    orderStockMenu();
                     break;
                 case "6":
                     return;
@@ -88,19 +91,43 @@ public class UserInterface {
         }
     }
 
-    private void displayProducts() {
-        if (productManagement.getInventoryProducts().isEmpty()) {
+    private void displayProductsForSale() {
+        if (productManagement.getProducts().isEmpty()) {
             System.out.println("No products found.");
             return;
         }
 
-        for (Integer key : productManagement.getInventoryProducts().keySet()) {
+        for (Integer key : productManagement.getProducts().keySet()) {
             System.out.println("[" + key + "] ");
             System.out.println("-------------------");
-            System.out.println("Name: " + productManagement.getInventoryProducts().get(key).getName());
-            System.out.println("Stock: " + productManagement.getInventoryProducts().get(key).getQuantityInStock());
-            System.out.println("Price: £" + productManagement.getInventoryProducts().get(key).getPrice());
+            System.out.println("Name: " + productManagement.getProducts().get(key).getName());
+            System.out.println("Stock: " + productManagement.getProducts().get(key).getStock());
+            System.out.println("Sell Price: £" + productManagement.getProducts().get(key).getSellPrice());
             System.out.println("-------------------");
+        }
+    }
+
+    private void displayProductsToBuy() {
+        if (supplierManagement.getSuppliers().isEmpty()) {
+            System.out.println("No suppliers found.");
+            return;
+        }
+
+        for (Integer key : supplierManagement.getSuppliers().keySet()) {
+            System.out.println("###########################");
+            System.out.println("[" + key + "] ");
+            System.out.println("---------------------------");
+            System.out.println("Name: " + supplierManagement.getSuppliers().get(key).getName());
+            System.out.println("Phone Number: " + supplierManagement.getSuppliers().get(key).getPhoneNumber());
+            System.out.println("---------------------------");
+            System.out.println("Products Available:");
+            System.out.println("---------------------------");
+            for (Product product : supplierManagement.getSuppliers().get(key).getAvailableProducts()) {
+                System.out.println("[" + product.getId() + "] ");
+                System.out.println("Name: " + product.getName());
+                System.out.println("Buy Price: £" + product.getBuyPrice());
+                System.out.println("---------------------------");
+            }
         }
     }
 
@@ -111,7 +138,7 @@ public class UserInterface {
                 ------------------------
                 """);
 
-        displayProducts();
+        displayProductsForSale();
     }
 
     private void addProductMenu() {
@@ -123,8 +150,16 @@ public class UserInterface {
                 """);
         String productName = scanner.nextLine();
 
+        displaySuppliers();
+
+        System.out.println("Enter the product's supplier ID:");
+        int supplierId = scanner.nextInt();
+
+        System.out.println("Enter the product's buy price:");
+        double productBuyPrice = scanner.nextDouble();
+
         System.out.println("Enter the product's sell price:");
-        double productPrice = scanner.nextDouble();
+        double productSellPrice = scanner.nextDouble();
 
         System.out.println("Enter the product's initial stock:");
         int productInitialStock = scanner.nextInt();
@@ -132,12 +167,14 @@ public class UserInterface {
         while (true) {
             System.out.println("Do you want to add a product with these details? (y or n)");
             System.out.println("Name: " + productName);
-            System.out.println("Price: £" + productPrice);
+            System.out.println("Supplier: " + supplierManagement.getSupperlierById(supplierId).getName());
+            System.out.println("Buy Price: £" + productBuyPrice);
+            System.out.println("Sell Price: £" + productSellPrice);
 
             String confirmation = scanner.nextLine();
 
             if (confirmation.equalsIgnoreCase("y")) {
-                productManagement.addProduct(productName, productPrice, productInitialStock);
+                productManagement.addProduct(productName, productBuyPrice, productSellPrice, productInitialStock, supplierId);
                 break;
 
             } else if (confirmation.equalsIgnoreCase("n")) {
@@ -155,7 +192,7 @@ public class UserInterface {
                 -------------------
                 """);
 
-        displayProducts();
+        displayProductsForSale();
         System.out.println("Enter the ID of the product you want to remove:");
         int userChoice = scanner.nextInt();
         productManagement.removeProduct(userChoice);
@@ -167,13 +204,14 @@ public class UserInterface {
                 Update Product Details
                 -------------------
                 """);
-        displayProducts();
+        displayProductsForSale();
         System.out.println("Enter the ID of the product you want to update:");
         int idToUpdate = scanner.nextInt();
 
         System.out.print("""
                 1. Name
-                2. Price
+                2. Sell Price
+                3. Buy Price
                 Select what you would like to update:
                 """);
         int userChoice = scanner.nextInt();
@@ -188,8 +226,12 @@ public class UserInterface {
                     productManagement.updateName(idToUpdate, newName);
                     break;
                 case 2:
-                    double newPrice = scanner.nextDouble();
-                    productManagement.updatePrice(idToUpdate, newPrice);
+                    double newSellPrice = scanner.nextDouble();
+                    productManagement.updateSellPrice(idToUpdate, newSellPrice);
+                    break;
+                case 3:
+                    double newBuyPrice = scanner.nextDouble();
+                    productManagement.updateBuyPrice(idToUpdate, newBuyPrice);
                     break;
                 default:
                     break;
@@ -197,8 +239,41 @@ public class UserInterface {
         } catch (SupplierNotFoundException supplierNotFound) {
             System.out.println(supplierNotFound.getMessage());
         }
+    }
 
-        inventoryManagementMenu();
+    private void orderStockMenu() {
+        ArrayList<OrderProductEntry> orderProducts = new ArrayList<>();
+
+        System.out.print("""
+                \n
+                Order Stock
+                -------------------
+                """);
+
+        boolean anotherEntry = true;
+        while (anotherEntry) {
+            displayProductsToBuy();
+            System.out.println("Enter the ID of the product you want to order stock for:");
+            int idToOrder = scanner.nextInt();
+            System.out.println("Enter the quantity you want to order:");
+            int quantityToOrder = scanner.nextInt();
+
+            OrderProductEntry orderProductEntry = new OrderProductEntry(productManagement.getProducts().get(idToOrder), quantityToOrder);
+            orderProducts.add(orderProductEntry);
+
+            System.out.println("Do you want to add another product to the order? (y or n)");
+            String confirmation = scanner.nextLine();
+
+            if (confirmation.equalsIgnoreCase("n")) {
+                anotherEntry = false;
+            } else if (!confirmation.equalsIgnoreCase("y")) {
+                System.out.println("Invalid input, try again");
+            }
+        }
+
+        orderManagement.createBuyOrder(orderProducts);
+
+        System.out.println("Order created successfully!");
     }
 
     private void supplierManagementMenu() {
@@ -248,8 +323,8 @@ public class UserInterface {
 
         for (Integer key : supplierManagement.getSuppliers().keySet()) {
             System.out
-                    .println("[" + key + "] " + supplierManagement.getSuppliers().get(key).getName()
-                            + " - " + supplierManagement.getSuppliers().get(key).getPhoneNumber());
+                    .println("[" + key + "] " + supplierManagement.getSupperlierById(key).getName()
+                            + " - " + supplierManagement.getSupperlierById(key).getPhoneNumber());
         }
     }
 
@@ -278,9 +353,7 @@ public class UserInterface {
 
         String supplierPhoneNumber = scanner.nextLine();
 
-        boolean confirm = false;
-
-        while (!confirm) {
+        while (true) {
             System.out.println("Do you want to add a supplier with these details? (y or n)");
             System.out.println("Name: " + supplierName);
             System.out.println("Phone number: " + supplierPhoneNumber);
@@ -288,7 +361,6 @@ public class UserInterface {
             String confirmation = scanner.nextLine();
 
             if (confirmation.equalsIgnoreCase("y")) {
-                confirm = true;
                 supplierManagement.addSupplier(supplierName, supplierPhoneNumber);
                 break;
 
@@ -298,8 +370,6 @@ public class UserInterface {
 
             System.out.println("Invalid input, try again");
         }
-
-        supplierManagementMenu();
     }
 
     private void updateSupplierMenu() {
@@ -337,8 +407,6 @@ public class UserInterface {
         } catch (SupplierNotFoundException supplierNotFound) {
             System.out.println(supplierNotFound.getMessage());
         }
-
-        supplierManagementMenu();
     }
 
     private void removeSupplierMenu() {
@@ -356,8 +424,6 @@ public class UserInterface {
         } catch (SupplierNotFoundException supplierNotFound) {
             System.out.println(supplierNotFound.getMessage());
         }
-
-        supplierManagementMenu();
     }
 
     private void financialReportsMenu() {
@@ -376,11 +442,11 @@ public class UserInterface {
     private void customerOrdersMenu() {
         System.out.print("""
                 \n
-                Customer Orders
+                Orders
                 ------------------------
                 Please select an option:
 
-                1. View Orders
+                1. View Buy Orders
                 2. Back to main menu
                 """);
     }

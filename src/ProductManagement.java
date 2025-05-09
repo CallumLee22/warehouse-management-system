@@ -1,32 +1,32 @@
 import java.util.HashMap;
 
 public class ProductManagement {
-    HashMap<Integer, InventoryProduct> inventoryProducts = new HashMap<>();
+    HashMap<Integer, Product> products = new HashMap<>();
     private int nextId = 1;
 
     public ProductManagement() {
 
     }
 
-    public void addProduct(String name, double price, int initialStock) {
-        inventoryProducts.put(nextId, new InventoryProduct(name, price, initialStock));
+    public void addProduct(String name, double buyPrice, double sellPrice, int initialStock, int supplierId) {
+        products.put(nextId, new Product(nextId, supplierId, name, buyPrice, sellPrice, initialStock));
         nextId++;
     }
 
-    public HashMap<Integer, InventoryProduct> getInventoryProducts() {
-        return inventoryProducts;
+    public HashMap<Integer, Product> getProducts() {
+        return products;
     }
 
     public void removeProduct(int id) {
-        if (!inventoryProducts.containsKey(id)) {
+        if (!products.containsKey(id)) {
             System.out.println("Invalid product ID.");
             return;
         }
-        inventoryProducts.remove(id);
+        products.remove(id);
     }
 
     public void updateName(int id, String newName) {
-        InventoryProduct product = inventoryProducts.get(id);
+        Product product = products.get(id);
         if (product != null) {
             product.setName(newName);
         } else {
@@ -35,10 +35,20 @@ public class ProductManagement {
         }
     }
 
-    public void updatePrice(int id, double newPrice) {
-        InventoryProduct product = inventoryProducts.get(id);
+    public void updateBuyPrice(int id, double newPrice) {
+        Product product = products.get(id);
         if (product != null) {
-            product.setPrice(newPrice);
+            product.setBuyPrice(newPrice);
+        } else {
+            throw new ProductNotFoundException(
+                    "Inventory product with ID " + id + " was not found when updating price");
+        }
+    }
+
+    public void updateSellPrice(int id, double newPrice) {
+        Product product = products.get(id);
+        if (product != null) {
+            product.setSellPrice(newPrice);
         } else {
             throw new ProductNotFoundException(
                     "Inventory product with ID " + id + " was not found when updating price");

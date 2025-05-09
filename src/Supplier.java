@@ -1,14 +1,20 @@
 import java.util.ArrayList;
 
 public class Supplier {
+    private final int id;
     private String name;
     private String phoneNumber;
     private ArrayList<Product> productsAvailable;
 
-    public Supplier(String name, String phoneNumber, ArrayList<Product> productsAvailable) {
+    public Supplier(int id, String name, String phoneNumber, ArrayList<Product> productsAvailable) {
+        this.id = id;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.productsAvailable = productsAvailable;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public String getName() {
@@ -31,7 +37,7 @@ public class Supplier {
         this.phoneNumber = phoneNumber;
     }
 
-    public void addAvailableProducts(ArrayList<Product> productsAvailable) {
-        this.productsAvailable.addAll(productsAvailable);
+    public void addAvailableProducts(Product product) {
+        this.productsAvailable.add(product);
     }
 }

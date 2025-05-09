@@ -1,10 +1,26 @@
 public class Product {
+    private final int id;
+    private final int supplierId;
     private String name;
-    private double price;
+    private double buyPrice;
+    private double sellPrice;
+    private int stock;
 
-    public Product(String name, double price) {
+    public Product(int id, int supplierId, String name, double buyPrice, double sellPrice, int stock) {
+        this.id = id;
+        this.supplierId = supplierId;
         this.name = name;
-        this.price = price;
+        this.buyPrice = buyPrice;
+        this.sellPrice = sellPrice;
+        this.stock = stock;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public int getSupplierId() {
+        return this.supplierId;
     }
 
     public String getName() {
@@ -15,11 +31,27 @@ public class Product {
         this.name = newName;
     }
 
-    public double getPrice() {
-        return this.price;
+    public double getBuyPrice() {
+        return this.buyPrice;
     }
 
-    public void setPrice(double newPrice) {
-        this.price = newPrice;
+    public void setBuyPrice(double newPrice) {
+        this.buyPrice = newPrice;
+    }
+
+    public double getSellPrice() {
+        return this.sellPrice;
+    }
+
+    public void setSellPrice(double newPrice) {
+        this.sellPrice = newPrice;
+    }
+
+    public int getStock() {
+        return this.stock;
+    }
+
+    public void setStock(int newStock) {
+        this.stock = newStock;
     }
 }

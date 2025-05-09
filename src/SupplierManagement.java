@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SupplierManagement {
@@ -10,7 +11,7 @@ public class SupplierManagement {
 
     public void addSupplier(String name, String phoneNumber) {
         if (Utilities.isValidPhoneNumber(phoneNumber)) {
-            suppliers.put(nextId, new Supplier(name, phoneNumber, null));
+            suppliers.put(nextId, new Supplier(nextId, name, phoneNumber, null));
             nextId++;
         } else {
             System.out.println("Invalid phone number format.");
@@ -46,6 +47,15 @@ public class SupplierManagement {
         } else {
             throw new SupplierNotFoundException(
                     "Supplier with ID " + id + " was not found when updating phone number");
+        }
+    }
+
+    public Supplier getSupperlierById(int id) {
+        Supplier supplier = suppliers.get(id);
+        if (supplier != null) {
+            return supplier;
+        } else {
+            throw new SupplierNotFoundException("Supplier with ID " + id + " was not found when getting supplier");
         }
     }
 }
