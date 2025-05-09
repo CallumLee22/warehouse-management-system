@@ -23,6 +23,9 @@ public class OrderManagementTests {
         orderManagement.createBuyOrder(productsForOrder);
 
         assertEquals(1, orderManagement.getBuyOrders().size());
+        assertEquals(5, orderManagement.getBuyOrders().getFirst().getProducts().getFirst().quantity());
+        assertEquals("Test Product", orderManagement.getBuyOrders().getFirst().getProducts().getFirst().product().getName());
+        assertEquals(productManagement.getProducts().get(1).getBuyPrice() * 5, orderManagement.getBuyOrders().getFirst().getTotalPrice(), 0.01);
     }
 
     @Test
