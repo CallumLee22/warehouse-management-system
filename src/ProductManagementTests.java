@@ -6,13 +6,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
 public class ProductManagementTests {
-    ProductManagement productManagement = new ProductManagement();
+    private final SupplierManagement supplierManagement = new SupplierManagement();
+    private final ProductManagement productManagement = new ProductManagement(supplierManagement);
 
     @Test
     public void testAddProduct() {
-        productManagement.addProduct("Test product", 12.50, 55);
+        productManagement.addProduct("Test product", 12.50, 15.10, 55, 1);
 
-        HashMap<Integer, InventoryProduct> products = productManagement.getInventoryProducts();
+        HashMap<Integer, Product> products = productManagement.getProducts();
 
         assertEquals(1, products.size());
         assertEquals("Test product", products.get(1).getName());
@@ -20,20 +21,20 @@ public class ProductManagementTests {
 
     @Test
     public void testRemoveProduct() {
-        productManagement.addProduct("Test product", 12.50, 55);
+        productManagement.addProduct("Test product", 12.50, 15.10, 55, 1);
         productManagement.removeProduct(1);
 
-        HashMap<Integer, InventoryProduct> products = productManagement.getInventoryProducts();
+        HashMap<Integer, Product> products = productManagement.getProducts();
 
         assertEquals(0, products.size());
     }
 
     @Test
     public void testUpdateProductName_validId() {
-        productManagement.addProduct("Test product", 12.50, 55);
+        productManagement.addProduct("Test product", 12.50, 15.76, 55, 1);
         productManagement.updateName(1, "Updated product");
 
-        HashMap<Integer, InventoryProduct> products = productManagement.getInventoryProducts();
+        HashMap<Integer, Product> products = productManagement.getProducts();
 
         assertEquals("Updated product", products.get(1).getName());
     }
@@ -48,19 +49,19 @@ public class ProductManagementTests {
     }
 
     @Test
-    public void testUpdateProductPrice_ValidId() {
-        productManagement.addProduct("Test product", 12.50, 55);
-        productManagement.updatePrice(1, 15.00);
+    public void testUpdateProductSellPrice_ValidId() {
+        productManagement.addProduct("Test product", 12.50, 15.25, 55, 1);
+        productManagement.updateSellPrice(1, 15.00);
 
-        HashMap<Integer, InventoryProduct> products = productManagement.getInventoryProducts();
+        HashMap<Integer, Product> products = productManagement.getProducts();
 
-        assertEquals(15.00, products.get(1).getPrice(), 0.01);
+        assertEquals(15.00, products.get(1).getSellPrice(), 0.01);
     }
 
     @Test
-    public void testUpdateProductPrice_InvalidId() {
+    public void testUpdateProductSellPrice_InvalidId() {
         Exception exception = assertThrows(ProductNotFoundException.class, () -> {
-            productManagement.updatePrice(1, 20.08);
+            productManagement.updateSellPrice(1, 20.08);
         });
 
         assertEquals("Inventory product with ID 1 was not found when updating price", exception.getMessage());
