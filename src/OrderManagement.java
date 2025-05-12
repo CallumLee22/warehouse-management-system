@@ -1,21 +1,22 @@
+import java.util.HashMap;
 import java.util.ArrayList;
 
 public abstract class OrderManagement<T> {
     private final ProductManagement productManagement;
     protected int nextOrderId = 1;
-    protected final ArrayList<T> orders = new ArrayList<>();
+    protected final HashMap<Integer, T> orders = new HashMap<>();
 
     public OrderManagement(ProductManagement productManagement) {
         this.productManagement = productManagement;
     }
 
-    public ArrayList<T> getOrders() {
+    public HashMap<Integer, T> getOrders() {
         return orders;
     }
 
     public void createOrder(ArrayList<OrderProductEntry> products) {
         T order = createOrderInstance(nextOrderId, products);
-        orders.add(order);
+        orders.put(nextOrderId, order);
         nextOrderId++;
 
         for (OrderProductEntry entry : products) {

@@ -14,7 +14,7 @@ public class BuyOrderManagement extends OrderManagement<BuyOrder> {
     @Override
     public void createOrder(ArrayList<OrderProductEntry> products) {
         BuyOrder order = createOrderInstance(nextOrderId, products);
-        orders.add(order);
+        orders.put(nextOrderId, order);
         nextOrderId++;
 
         // Simulating products taking time to arrive
@@ -31,7 +31,8 @@ public class BuyOrderManagement extends OrderManagement<BuyOrder> {
         return new BuyOrder(orderId, products);
     }
 
-    public void acceptDelivery(BuyOrder order) {
+    public void acceptDelivery(int orderId) {
+        BuyOrder order = getOrders().get(orderId);
         order.setStatus(BuyOrderStatus.DELIVERED);
 
         for (OrderProductEntry entry : order.getProducts()) {

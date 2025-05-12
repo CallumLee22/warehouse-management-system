@@ -66,6 +66,7 @@ public class UserInterface {
                 3. Remove product
                 4. Update product details
                 5. Order stock
+                6. View Deliveries
                 6. Back to main menu
                 """);
 
@@ -88,6 +89,9 @@ public class UserInterface {
                     orderStockMenu();
                     break;
                 case "6":
+                    viewBuyOrdersMenu();
+                    break;
+                case "7":
                     return;
                 default:
                     System.err.println("Invalid choice, try again");
@@ -280,6 +284,60 @@ public class UserInterface {
         buyOrderManagement.createOrder(orderProducts);
 
         System.out.println("Order created successfully!");
+    }
+
+    private void viewBuyOrdersMenu() {
+        while (true) {
+            System.out.print("""
+                    \n
+                    View Orders
+                    ------------------------
+                    """);
+
+            if (buyOrderManagement.getOrders().isEmpty()) {
+                System.out.println("No orders found.");
+            }
+
+            for (Integer key : buyOrderManagement.getOrders().keySet()) {
+                System.out.println("Order ID: " + buyOrderManagement.getOrders().get(key).getId());
+                System.out.println("Status: " +  buyOrderManagement.getOrders().get(key).getStatus());
+                System.out.println("------------------------");
+            }
+
+            System.out.print("""
+                    \n
+                    Please select an option:
+
+                    1. Refresh
+                    2. Accept a Delivery
+                    3. Back to main menu
+                    """);
+
+            String menuChoice = scanner.nextLine();
+
+            switch (menuChoice) {
+                case "1":
+                    viewBuyOrdersMenu();
+                    break;
+                case "2":
+                    System.out.println("Orders Ready for Delivery:");
+                    for (Integer key : buyOrderManagement.getOrders().keySet()) {
+                        if (buyOrderManagement.getOrders().get(key).getStatus() == BuyOrderStatus.READY_FOR_DELIVERY) {
+                            System.out.println("Order ID: " +  buyOrderManagement.getOrders().get(key).getId());
+                            System.out.println("------------------------");
+                        }
+                    }
+                    System.out.println("Enter the ID of the order you want to accept:");
+                    int orderId = scanner.nextInt();
+                    buyOrderManagement.acceptDelivery(orderId);
+                    break;
+                case "3":
+                    return;
+                default:
+                    System.err.println("Invalid choice, try again");
+                    break;
+            }
+        }
     }
 
     private void supplierManagementMenu() {
