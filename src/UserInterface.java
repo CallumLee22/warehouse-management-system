@@ -6,6 +6,7 @@ public class UserInterface {
     private final SupplierManagement supplierManagement = new SupplierManagement();
     private final ProductManagement productManagement = new ProductManagement(supplierManagement);
     private final BuyOrderManagement buyOrderManagement = new BuyOrderManagement(productManagement);
+    private final SellOrderManagement sellOrderManagement = new SellOrderManagement(productManagement);
     private final UIAlertHandler alertHandler = new UIAlertHandler();
 
     public void mainMenu() {
@@ -22,7 +23,7 @@ public class UserInterface {
 
                     1. Inventory Management
                     2. Supplier Management
-                    3. View Orders
+                    3. Customer Orders
                     4. Financial Reports
                     5. Exit
                     """);
@@ -37,7 +38,7 @@ public class UserInterface {
                     supplierManagementMenu();
                     break;
                 case "3":
-                    orderStockMenu();
+                    customerOrdersMenu();
                     break;
                 case "4":
                     financialReportsMenu();
@@ -490,6 +491,18 @@ public class UserInterface {
         }
     }
 
+    private void customerOrdersMenu() {
+        System.out.print("""
+                \n
+                Orders
+                ------------------------
+                Please select an option:
+
+                1. View Buy Orders
+                2. Back to main menu
+                """);
+    }
+
     private void financialReportsMenu() {
         System.out.print("""
                 \n
@@ -500,18 +513,6 @@ public class UserInterface {
                 1. View reports
                 2. Create Report
                 3. Back to main menu
-                """);
-    }
-
-    private void customerOrdersMenu() {
-        System.out.print("""
-                \n
-                Orders
-                ------------------------
-                Please select an option:
-
-                1. View Buy Orders
-                2. Back to main menu
                 """);
     }
 }
