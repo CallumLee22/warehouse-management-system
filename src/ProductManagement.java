@@ -3,9 +3,10 @@ import java.util.HashMap;
 public class ProductManagement {
     HashMap<Integer, Product> products = new HashMap<>();
     private int nextId = 1;
+    private final SupplierManagement supplierManagement;
 
-    public ProductManagement() {
-
+    public ProductManagement(SupplierManagement supplierManagement) {
+        this.supplierManagement = supplierManagement;
     }
 
     public void addProduct(String name, double buyPrice, double sellPrice, int initialStock, int supplierId) {

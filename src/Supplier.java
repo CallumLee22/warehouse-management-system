@@ -4,13 +4,12 @@ public class Supplier {
     private final int id;
     private String name;
     private String phoneNumber;
-    private ArrayList<Product> productsAvailable;
+    private ArrayList<Product> productsAvailable = new ArrayList<>();
 
-    public Supplier(int id, String name, String phoneNumber, ArrayList<Product> productsAvailable) {
+    public Supplier(int id, String name, String phoneNumber) {
         this.id = id;
         this.name = name;
         this.phoneNumber = phoneNumber;
-        this.productsAvailable = productsAvailable;
     }
 
     public int getId() {

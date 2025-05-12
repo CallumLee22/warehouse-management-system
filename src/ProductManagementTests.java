@@ -6,7 +6,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
 public class ProductManagementTests {
-    ProductManagement productManagement = new ProductManagement();
+    private final SupplierManagement supplierManagement = new SupplierManagement();
+    private final ProductManagement productManagement = new ProductManagement(supplierManagement);
 
     @Test
     public void testAddProduct() {

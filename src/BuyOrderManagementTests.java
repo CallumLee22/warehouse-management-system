@@ -4,9 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 
-public class OrderManagementTests {
-    private final ProductManagement productManagement = new ProductManagement();
-    private final OrderManagement orderManagement = new OrderManagement(productManagement);
+public class BuyOrderManagementTests {
+    private final SupplierManagement supplierManagement = new SupplierManagement();
+    private final ProductManagement productManagement = new ProductManagement(supplierManagement);
+    private final BuyOrderManagement buyOrderManagement = new BuyOrderManagement(productManagement);
 
     @Before
     public void setUp() {
@@ -20,12 +21,12 @@ public class OrderManagementTests {
         ArrayList<OrderProductEntry> productsForOrder = new ArrayList<>();
         productsForOrder.add(productEntry);
 
-        orderManagement.createBuyOrder(productsForOrder);
+        buyOrderManagement.createOrder(productsForOrder);
 
-        assertEquals(1, orderManagement.getBuyOrders().size());
-        assertEquals(5, orderManagement.getBuyOrders().getFirst().getProducts().getFirst().quantity());
-        assertEquals("Test Product", orderManagement.getBuyOrders().getFirst().getProducts().getFirst().product().getName());
-        assertEquals(productManagement.getProducts().get(1).getBuyPrice() * 5, orderManagement.getBuyOrders().getFirst().getTotalPrice(), 0.01);
+        assertEquals(1, buyOrderManagement.getOrders().size());
+        assertEquals(5, buyOrderManagement.getOrders().getFirst().getProducts().getFirst().quantity());
+        assertEquals("Test Product", buyOrderManagement.getOrders().getFirst().getProducts().getFirst().product().getName());
+        assertEquals(productManagement.getProducts().get(1).getBuyPrice() * 5, buyOrderManagement.getOrders().getFirst().getTotalPrice(), 0.01);
     }
 
     @Test
@@ -36,7 +37,7 @@ public class OrderManagementTests {
         ArrayList<OrderProductEntry> productsForOrder = new ArrayList<>();
         productsForOrder.add(productEntry);
 
-        orderManagement.createBuyOrder(productsForOrder);
+        buyOrderManagement.createOrder(productsForOrder);
 
         assertEquals(initialStock + 5, productManagement.getProducts().get(1).getStock());
     }

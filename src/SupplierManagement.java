@@ -11,7 +11,7 @@ public class SupplierManagement {
 
     public void addSupplier(String name, String phoneNumber) {
         if (Utilities.isValidPhoneNumber(phoneNumber)) {
-            suppliers.put(nextId, new Supplier(nextId, name, phoneNumber, null));
+            suppliers.put(nextId, new Supplier(nextId, name, phoneNumber));
             nextId++;
         } else {
             System.out.println("Invalid phone number format.");

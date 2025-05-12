@@ -3,11 +3,16 @@ import java.util.Scanner;
 
 public class UserInterface {
     private final Scanner scanner = new Scanner(System.in);
-    private static final SupplierManagement supplierManagement = new SupplierManagement();
-    private final ProductManagement productManagement = new ProductManagement();
-    private final OrderManagement orderManagement = new OrderManagement(productManagement);
+    private final SupplierManagement supplierManagement = new SupplierManagement();
+    private final ProductManagement productManagement = new ProductManagement(supplierManagement);
+    private final BuyOrderManagement buyOrderManagement = new BuyOrderManagement(productManagement);
+    private final UIAlertHandler alertHandler = new UIAlertHandler();
 
     public void mainMenu() {
+        supplierManagement.addSupplier("Example Supplier", "1234567890");
+        productManagement.addProduct("Example Product", 10.0, 15.0, 100, 1);
+
+        buyOrderManagement.setStatusListener(alertHandler);
         while (true) {
             System.out.print("""
                     \n
@@ -262,6 +267,7 @@ public class UserInterface {
             orderProducts.add(orderProductEntry);
 
             System.out.println("Do you want to add another product to the order? (y or n)");
+            scanner.nextLine();
             String confirmation = scanner.nextLine();
 
             if (confirmation.equalsIgnoreCase("n")) {
@@ -271,7 +277,7 @@ public class UserInterface {
             }
         }
 
-        orderManagement.createBuyOrder(orderProducts);
+        buyOrderManagement.createOrder(orderProducts);
 
         System.out.println("Order created successfully!");
     }
