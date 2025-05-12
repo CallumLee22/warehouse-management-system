@@ -14,18 +14,7 @@ public abstract class OrderManagement<T> {
         return orders;
     }
 
-    public void createOrder(ArrayList<OrderProductEntry> products) {
-        T order = createOrderInstance(nextOrderId, products);
-        orders.put(nextOrderId, order);
-        nextOrderId++;
-
-        for (OrderProductEntry entry : products) {
-            int productId = entry.product().getId();
-            int quantity = entry.quantity();
-
-            updateStock(productId, quantity);
-        }
-    }
+    public abstract void createOrder(ArrayList<OrderProductEntry> products);
 
     protected abstract T createOrderInstance(int orderId, ArrayList<OrderProductEntry> products);
 
