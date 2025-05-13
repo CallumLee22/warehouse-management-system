@@ -29,9 +29,9 @@ public class UserInterface {
                     5. Exit
                     """);
 
-            String userChoice = scanner.nextLine();
+            String mainMenuUserChoice = scanner.nextLine();
 
-            switch (userChoice) {
+            switch (mainMenuUserChoice) {
                 case "1":
                     inventoryManagementMenu();
                     break;
@@ -72,9 +72,9 @@ public class UserInterface {
                 7. Back to main menu
                 """);
 
-            String menuChoice = scanner.nextLine();
+            String inventoryManagementMenuChoice = scanner.nextLine();
 
-            switch (menuChoice) {
+            switch (inventoryManagementMenuChoice) {
                 case "1":
                     viewProductsMenu();
                     break;
@@ -225,13 +225,13 @@ public class UserInterface {
                 3. Buy Price
                 Select what you would like to update:
                 """);
-        int userChoice = scanner.nextInt();
+        int updateProductDetailsMenuChoice = scanner.nextInt();
         scanner.nextLine();
 
         System.out.println("Enter the new value:");
 
         try {
-            switch (userChoice) {
+            switch (updateProductDetailsMenuChoice) {
                 case 1:
                     String newName = scanner.nextLine();
                     productManagement.updateName(idToUpdate, newName);
@@ -315,9 +315,9 @@ public class UserInterface {
                     3. Back to main menu
                     """);
 
-            String menuChoice = scanner.nextLine();
+            String viewOrdersMenuChoice = scanner.nextLine();
 
-            switch (menuChoice) {
+            switch (viewOrdersMenuChoice) {
                 case "1":
                     viewBuyOrdersMenu();
                     break;
@@ -357,9 +357,9 @@ public class UserInterface {
                     5. Back to main menu
                     """);
 
-            String menuChoice = scanner.nextLine();
+            String supplierManagementMenuChoice = scanner.nextLine();
 
-            switch (menuChoice) {
+            switch (supplierManagementMenuChoice) {
                 case "1":
                     viewSuppliersMenu();
                     break;
@@ -453,14 +453,14 @@ public class UserInterface {
                 2. Phone Number
                 Select what you would like to update:
                 """);
-        int userChoice = scanner.nextInt();
+        int updateSupplierMenuChoice = scanner.nextInt();
         scanner.nextLine();
 
         System.out.println("Enter the new value:");
         String newValue = scanner.nextLine();
 
         try {
-            switch (userChoice) {
+            switch (updateSupplierMenuChoice) {
                 case 1:
                     supplierManagement.updateName(idToUpdate, newValue);
                     break;
@@ -505,8 +505,8 @@ public class UserInterface {
                 3. Back to main menu
                 """);
 
-            String menuChoice = scanner.nextLine();
-            switch (menuChoice) {
+            String customerOrdersMenuChoice = scanner.nextLine();
+            switch (customerOrdersMenuChoice) {
                 case "1":
                     viewCustomerOrdersMenu();
                     break;
@@ -595,9 +595,9 @@ public class UserInterface {
                 3. Back to main menu
                 """);
 
-            String menuChoice = scanner.nextLine();
+            String financialReportsMenuChoice = scanner.nextLine();
 
-            switch (menuChoice) {
+            switch (financialReportsMenuChoice) {
                 case "1":
                     viewReportsMenu();
                     break;
