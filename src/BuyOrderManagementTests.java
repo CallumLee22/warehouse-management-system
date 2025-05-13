@@ -11,6 +11,8 @@ public class BuyOrderManagementTests {
 
     @Before
     public void setUp() {
+        supplierManagement.addSupplier("Test Supplier", "1234567890");
+        supplierManagement.addSupplier("Another Supplier", "0987654321");
         productManagement.addProduct("Test Product", 12.50, 20.90, 1, 1);
         productManagement.addProduct("Another Product", 15.00, 25.00, 2, 2);
     }

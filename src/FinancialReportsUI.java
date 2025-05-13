@@ -2,13 +2,9 @@ import java.util.Scanner;
 
 public class FinancialReportsUI {
     private final Scanner scanner = new Scanner(System.in);
-    private final BuyOrderManagement buyOrderManagement;
-    private final SellOrderManagement sellOrderManagement;
     private final FinancialReportManagement financialReportManagement;
 
-    public FinancialReportsUI(BuyOrderManagement buyOrderManagement, SellOrderManagement sellOrderManagement, FinancialReportManagement financialReportManagement) {
-        this.buyOrderManagement = buyOrderManagement;
-        this.sellOrderManagement = sellOrderManagement;
+    public FinancialReportsUI(FinancialReportManagement financialReportManagement) {
         this.financialReportManagement = financialReportManagement;
     }
 

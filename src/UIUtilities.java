@@ -7,8 +7,8 @@ public class UIUtilities {
 
         for (Integer key : supplierManagement.getSuppliers().keySet()) {
             System.out
-                    .println("[" + key + "] " + supplierManagement.getSupperlierById(key).getName()
-                            + " - " + supplierManagement.getSupperlierById(key).getPhoneNumber());
+                    .println("[" + key + "] " + supplierManagement.getSupplierById(key).getName()
+                            + " - " + supplierManagement.getSupplierById(key).getPhoneNumber());
         }
     }
 

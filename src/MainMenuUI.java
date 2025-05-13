@@ -5,8 +5,6 @@ public class MainMenuUI {
     private final SupplierManagement supplierManagement;
     private final ProductManagement productManagement;
     private final BuyOrderManagement buyOrderManagement;
-    private final SellOrderManagement sellOrderManagement;
-    private final FinancialReportManagement financialReportManagement;
     private final UIAlertHandler alertHandler;
     private final InventoryManagementUI inventoryManagementUI;
     private final SupplierManagementUI supplierManagementUI;
@@ -17,14 +15,12 @@ public class MainMenuUI {
         this.supplierManagement = supplierManagement;
         this.productManagement = productManagement;
         this.buyOrderManagement = buyOrderManagement;
-        this.sellOrderManagement = sellOrderManagement;
-        this.financialReportManagement = financialReportManagement;
         this.alertHandler = alertHandler;
 
         this.inventoryManagementUI = new InventoryManagementUI(supplierManagement, productManagement, buyOrderManagement);
         this.supplierManagementUI = new SupplierManagementUI(supplierManagement);
         this.customerOrdersUI = new CustomerOrdersUI(sellOrderManagement, productManagement);
-        this.financialReportsUI = new FinancialReportsUI(buyOrderManagement, sellOrderManagement, financialReportManagement);
+        this.financialReportsUI = new FinancialReportsUI(financialReportManagement);
     }
 
     public void mainMenu() {

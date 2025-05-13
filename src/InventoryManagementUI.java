@@ -143,7 +143,7 @@ public class InventoryManagementUI {
         while (true) {
             System.out.println("Do you want to add a product with these details? (y or n)");
             System.out.println("Name: " + productName);
-            System.out.println("Supplier: " + supplierManagement.getSupperlierById(supplierId).getName());
+            System.out.println("Supplier: " + supplierManagement.getSupplierById(supplierId).getName());
             System.out.println("Buy Price: £" + productBuyPrice);
             System.out.println("Sell Price: £" + productSellPrice);
 
