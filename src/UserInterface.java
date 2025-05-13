@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -163,17 +164,61 @@ public class UserInterface {
 
         displaySuppliers();
 
-        System.out.println("Enter the product's supplier ID:");
-        int supplierId = scanner.nextInt();
+        int supplierId = 0;
+        boolean validSupplierId = false;
 
-        System.out.println("Enter the product's buy price:");
-        double productBuyPrice = scanner.nextDouble();
+        while (!validSupplierId) {
+            System.out.println("Enter the product's supplier ID:");
+            try {
+                supplierId = scanner.nextInt();
+                validSupplierId = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter an integer value for the supplier ID.");
+                scanner.nextLine();
+            }
+        }
 
-        System.out.println("Enter the product's sell price:");
-        double productSellPrice = scanner.nextDouble();
+        double productBuyPrice = 0;
+        boolean validBuyPrice = false;
 
-        System.out.println("Enter the product's initial stock:");
-        int productInitialStock = scanner.nextInt();
+        while (!validBuyPrice) {
+            System.out.println("Enter the product's buy price:");
+            try {
+                productBuyPrice = scanner.nextDouble();
+                validBuyPrice = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter a decimal number for the buy price.");
+                scanner.nextLine();
+            }
+        }
+
+        double productSellPrice = 0;
+        boolean validSellPrice = false;
+
+        while (!validSellPrice) {
+            System.out.println("Enter the product's buy price:");
+            try {
+                productSellPrice = scanner.nextDouble();
+                validSellPrice = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter a decimal number for the sell price.");
+                scanner.nextLine();
+            }
+        }
+
+        int productInitialStock = 0;
+        boolean validInitialStock = false;
+
+        while (!validInitialStock) {
+            System.out.println("Enter the product's initial stock:");
+            try {
+                productInitialStock = scanner.nextInt();
+                validInitialStock = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter an integer for the initial stock.");
+                scanner.nextLine();
+            }
+        }
 
         while (true) {
             System.out.println("Do you want to add a product with these details? (y or n)");
@@ -225,26 +270,27 @@ public class UserInterface {
                 3. Buy Price
                 Select what you would like to update:
                 """);
-        int updateProductDetailsMenuChoice = scanner.nextInt();
+        String updateProductDetailsMenuChoice = scanner.nextLine();
         scanner.nextLine();
 
         System.out.println("Enter the new value:");
 
         try {
             switch (updateProductDetailsMenuChoice) {
-                case 1:
+                case "1":
                     String newName = scanner.nextLine();
                     productManagement.updateName(idToUpdate, newName);
                     break;
-                case 2:
+                case "2":
                     double newSellPrice = scanner.nextDouble();
                     productManagement.updateSellPrice(idToUpdate, newSellPrice);
                     break;
-                case 3:
+                case "3":
                     double newBuyPrice = scanner.nextDouble();
                     productManagement.updateBuyPrice(idToUpdate, newBuyPrice);
                     break;
                 default:
+                    System.out.println("Invalid choice, try again");
                     break;
             }
         } catch (SupplierNotFoundException supplierNotFound) {
@@ -264,10 +310,34 @@ public class UserInterface {
         boolean anotherEntry = true;
         while (anotherEntry) {
             displayProductsToBuy();
-            System.out.println("Enter the ID of the product you want to order stock for:");
-            int idToOrder = scanner.nextInt();
-            System.out.println("Enter the quantity you want to order:");
-            int quantityToOrder = scanner.nextInt();
+
+            int idToOrder = 0;
+            int quantityToOrder = 0;
+            boolean validId = false;
+
+            while (!validId) {
+                System.out.println("Enter the ID of the product you want to order:");
+                try {
+                    idToOrder = scanner.nextInt();
+                    validId = true;
+                } catch (InputMismatchException e) {
+                    System.out.println("Please enter an integer.");
+                    scanner.nextLine();
+                }
+            }
+
+            boolean validQuantity = false;
+
+            while (!validQuantity) {
+                System.out.println("Enter the quantity you want to order:");
+                try {
+                    quantityToOrder = scanner.nextInt();
+                    validQuantity = true;
+                } catch (InputMismatchException e) {
+                    System.out.println("Please enter an integer.");
+                    scanner.nextLine();
+                }
+            }
 
             OrderProductEntry orderProductEntry = new OrderProductEntry(productManagement.getProducts().get(idToOrder), quantityToOrder);
             orderProducts.add(orderProductEntry);
@@ -329,8 +399,20 @@ public class UserInterface {
                             System.out.println("------------------------");
                         }
                     }
-                    System.out.println("Enter the ID of the order you want to accept:");
-                    int orderId = scanner.nextInt();
+
+                    int orderId = 0;
+                    boolean validInput = false;
+
+                    while (!validInput) {
+                        System.out.println("Enter the ID of the order you want to accept:");
+                        try {
+                            orderId = scanner.nextInt();
+                            validInput = true;
+                        } catch (InputMismatchException e) {
+                            System.out.println("Please enter an integer.");
+                            scanner.nextLine();
+                        }
+                    }
                     buyOrderManagement.acceptDelivery(orderId);
                     break;
                 case "3":
@@ -446,28 +528,43 @@ public class UserInterface {
                 """);
 
         displaySuppliers();
-        System.out.println("Enter the ID of the supplier you want to update:");
-        int idToUpdate = scanner.nextInt();
+
+        int idToUpdate = 0;
+        boolean validInput = false;
+
+        while (!validInput) {
+            System.out.println("Enter the ID of the supplier you want to update:");
+            try {
+                idToUpdate = scanner.nextInt();
+                validInput = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter an integer value for the ID.");
+                scanner.nextLine();
+            }
+        }
+
         System.out.print("""
                 1. Name
                 2. Phone Number
                 Select what you would like to update:
                 """);
-        int updateSupplierMenuChoice = scanner.nextInt();
+        String updateSupplierMenuChoice = scanner.nextLine();
         scanner.nextLine();
-
-        System.out.println("Enter the new value:");
-        String newValue = scanner.nextLine();
 
         try {
             switch (updateSupplierMenuChoice) {
-                case 1:
-                    supplierManagement.updateName(idToUpdate, newValue);
+                case "1":
+                    System.out.println("Enter the new name:");
+                    String newName = scanner.nextLine();
+                    supplierManagement.updateName(idToUpdate, newName);
                     break;
-                case 2:
-                    supplierManagement.updatePhoneNumber(idToUpdate, newValue);
+                case "2":
+                    System.out.println("Enter the new phone number:");
+                    String newPhoneNumber = scanner.nextLine();
+                    supplierManagement.updatePhoneNumber(idToUpdate, newPhoneNumber);
                     break;
                 default:
+                    System.out.println("Invalid choice, try again");
                     break;
             }
         } catch (SupplierNotFoundException supplierNotFound) {
