@@ -7,6 +7,7 @@ public class UserInterface {
     private final ProductManagement productManagement = new ProductManagement(supplierManagement);
     private final BuyOrderManagement buyOrderManagement = new BuyOrderManagement(productManagement);
     private final SellOrderManagement sellOrderManagement = new SellOrderManagement(productManagement);
+    private final FinancialReportManagement financialReportManagement = new FinancialReportManagement(buyOrderManagement, sellOrderManagement);
     private final UIAlertHandler alertHandler = new UIAlertHandler();
 
     public void mainMenu() {
@@ -68,7 +69,7 @@ public class UserInterface {
                 4. Update product details
                 5. Order stock
                 6. View Deliveries
-                6. Back to main menu
+                7. Back to main menu
                 """);
 
             String menuChoice = scanner.nextLine();
@@ -582,7 +583,8 @@ public class UserInterface {
     }
 
     private void financialReportsMenu() {
-        System.out.print("""
+        while (true) {
+            System.out.print("""
                 \n
                 Financial Reports
                 ------------------------
@@ -592,5 +594,72 @@ public class UserInterface {
                 2. Create Report
                 3. Back to main menu
                 """);
+
+            String menuChoice = scanner.nextLine();
+
+            switch (menuChoice) {
+                case "1":
+                    viewReportsMenu();
+                    break;
+                case "2":
+                    createReportMenu();
+                    break;
+                case "3":
+                    return;
+                default:
+                    System.err.println("Invalid choice, try again");
+                    break;
+            }
+        }
+    }
+
+    private void viewReportsMenu() {
+        System.out.print("""
+                \n
+                View Financial Reports
+                ------------------------
+                """);
+
+        if (financialReportManagement.getReports() == null || financialReportManagement.getReports().isEmpty()) {
+            System.out.println("No financial reports found.");
+            System.out.println("Press Enter to return to the menu.");
+            scanner.nextLine();
+            return;
+        }
+
+        for (FinancialReport report : financialReportManagement.getReports()) {
+            System.out.println("Report ID: " + report.getId());
+            System.out.println("Date: " + report.getReportDate());
+            System.out.println("Total Revenue: £" + report.getTotalRevenue());
+            System.out.println("Total Expenses: £" + report.getTotalExpenses());
+            System.out.println("Net Profit: £" + report.getNetProfit());
+            System.out.println("------------------------");
+        }
+
+        System.out.println("Press Enter to return to the menu.");
+        scanner.nextLine();
+    }
+
+    private void createReportMenu() {
+        System.out.print("""
+                \n
+                Create Financial Report
+                ------------------------
+                """);
+
+        while (true) {
+            System.out.println("Are you sure you want to create a financial report? (y or n)");
+            String confirmation = scanner.nextLine();
+            if (confirmation.equalsIgnoreCase("y")) {
+                financialReportManagement.createReport();
+                break;
+            } else if (confirmation.equalsIgnoreCase("n")) {
+                return;
+            } else {
+                System.out.println("Invalid input, try again");
+            }
+        }
+
+        System.out.println("Financial report created successfully!");
     }
 }
