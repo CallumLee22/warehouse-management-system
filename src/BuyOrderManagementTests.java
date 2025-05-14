@@ -41,6 +41,7 @@ public class BuyOrderManagementTests {
 
         buyOrderManagement.createOrder(productsForOrder);
 
+        buyOrderManagement.acceptDelivery(1);
         assertEquals(initialStock + 5, productManagement.getProducts().get(1).getStock());
     }
 }
