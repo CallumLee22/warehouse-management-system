@@ -5,6 +5,7 @@ public abstract class OrderManagement<T> {
     private final ProductManagement productManagement;
     protected int nextOrderId = 1;
     protected final HashMap<Integer, T> orders = new HashMap<>();
+    private ProductStockListener stockListener;
 
     public OrderManagement(ProductManagement productManagement) {
         this.productManagement = productManagement;
@@ -23,9 +24,16 @@ public abstract class OrderManagement<T> {
         if (product != null) {
             int newStock = product.getStock() + quantity;
             product.setStock(newStock);
+            if (product.getStock() <= 20 && stockListener != null) {
+                stockListener.onLowStock(product);
+            }
         } else {
             throw new ProductNotFoundException(
                     "Inventory product with ID " + productId + " was not found when updating stock");
         }
+    }
+
+    public void setLowStockListener(ProductStockListener listener) {
+        this.stockListener = listener;
     }
 }

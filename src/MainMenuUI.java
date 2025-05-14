@@ -10,12 +10,14 @@ public class MainMenuUI {
     private final SupplierManagementUI supplierManagementUI;
     private final CustomerOrdersUI customerOrdersUI;
     private final FinancialReportsUI financialReportsUI;
+    private final SellOrderManagement sellOrderManagement;
 
     public MainMenuUI(SupplierManagement supplierManagement, ProductManagement productManagement, BuyOrderManagement buyOrderManagement, SellOrderManagement sellOrderManagement, FinancialReportManagement financialReportManagement, UIAlertHandler alertHandler) {
         this.supplierManagement = supplierManagement;
         this.productManagement = productManagement;
         this.buyOrderManagement = buyOrderManagement;
         this.alertHandler = alertHandler;
+        this.sellOrderManagement = sellOrderManagement;
 
         this.inventoryManagementUI = new InventoryManagementUI(supplierManagement, productManagement, buyOrderManagement);
         this.supplierManagementUI = new SupplierManagementUI(supplierManagement);
@@ -28,6 +30,8 @@ public class MainMenuUI {
         productManagement.addProduct("Example Product", 10.0, 15.0, 100, 1);
 
         buyOrderManagement.setStatusListener(alertHandler);
+        sellOrderManagement.setLowStockListener(alertHandler);
+
         while (true) {
             System.out.print("""
                     \n
