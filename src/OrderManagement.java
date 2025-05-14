@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 
 public abstract class OrderManagement<T> {
-    private final ProductManagement productManagement;
+    protected final ProductManagement productManagement;
     protected int nextOrderId = 1;
     protected final HashMap<Integer, T> orders = new HashMap<>();
     private ProductStockListener stockListener;

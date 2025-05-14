@@ -1,6 +1,7 @@
 import org.junit.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 import java.util.ArrayList;
 
@@ -18,7 +19,7 @@ public class BuyOrderManagementTests {
     }
 
     @Test
-    public void testCreateBuyOrder() {
+    public void testCreateBuyOrder_ValidProductId() {
         OrderProductEntry productEntry = new OrderProductEntry(productManagement.getProducts().get(1), 5);
         ArrayList<OrderProductEntry> productsForOrder = new ArrayList<>();
         productsForOrder.add(productEntry);
@@ -29,6 +30,20 @@ public class BuyOrderManagementTests {
         assertEquals(5, buyOrderManagement.getOrders().get(1).getProducts().getFirst().quantity());
         assertEquals("Test Product", buyOrderManagement.getOrders().get(1).getProducts().getFirst().product().getName());
         assertEquals(productManagement.getProducts().get(1).getBuyPrice() * 5, buyOrderManagement.getOrders().get(1).getTotalPrice(), 0.01);
+    }
+
+    @Test
+    public void testCreateBuyOrder_InvalidProductId() {
+        OrderProductEntry productEntry = new OrderProductEntry(productManagement.getProducts().get(999), 5);
+        ArrayList<OrderProductEntry> productsForOrder = new ArrayList<>();
+        productsForOrder.add(productEntry);
+
+        Exception exception = assertThrows(ProductNotFoundException.class, () -> {
+            buyOrderManagement.createOrder(productsForOrder);
+        });
+
+        assertEquals("Invalid product in order", exception.getMessage());
+        assertEquals(0, buyOrderManagement.getOrders().size());
     }
 
     @Test

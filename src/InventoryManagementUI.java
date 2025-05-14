@@ -312,7 +312,12 @@ public class InventoryManagementUI {
             }
         }
 
-        buyOrderManagement.createOrder(orderProducts);
+        try {
+            buyOrderManagement.createOrder(orderProducts);
+        } catch (ProductNotFoundException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
 
         System.out.println("Order created successfully!");
     }

@@ -13,6 +13,12 @@ public class BuyOrderManagement extends OrderManagement<BuyOrder> {
 
     @Override
     public void createOrder(ArrayList<OrderProductEntry> products) {
+        for (OrderProductEntry entry : products) {
+            if (entry.product() == null) {
+                throw new ProductNotFoundException("Invalid product in order");
+
+            }
+        }
         BuyOrder order = createOrderInstance(nextOrderId, products);
         orders.put(nextOrderId, order);
         nextOrderId++;
@@ -33,6 +39,10 @@ public class BuyOrderManagement extends OrderManagement<BuyOrder> {
 
     public void acceptDelivery(int orderId) {
         BuyOrder order = getOrders().get(orderId);
+        if (order == null) {
+            System.out.println("Order not found.");
+            return;
+        }
         order.setStatus(BuyOrderStatus.DELIVERED);
 
         for (OrderProductEntry entry : order.getProducts()) {
