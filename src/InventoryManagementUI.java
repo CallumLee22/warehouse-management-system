@@ -70,7 +70,7 @@ public class InventoryManagementUI {
                 ------------------------
                 """);
 
-        UIUtilities.displayProductsToBuy(supplierManagement);
+        UIUtilities.displayProducts(productManagement);
     }
 
     private void addProductMenu() {
@@ -91,6 +91,10 @@ public class InventoryManagementUI {
             System.out.println("Enter the product's supplier ID:");
             try {
                 supplierId = scanner.nextInt();
+                if (!supplierManagement.getSuppliers().containsKey(supplierId)) {
+                    System.out.println("Invalid supplier ID, please try again.");
+                    continue;
+                }
                 validSupplierId = true;
             } catch (InputMismatchException e) {
                 System.out.println("Please enter an integer value for the supplier ID.");
@@ -105,6 +109,10 @@ public class InventoryManagementUI {
             System.out.println("Enter the product's buy price:");
             try {
                 productBuyPrice = scanner.nextDouble();
+                if (productBuyPrice < 0) {
+                    System.out.println("Buy price cannot be negative, please try again.");
+                    continue;
+                }
                 validBuyPrice = true;
             } catch (InputMismatchException e) {
                 System.out.println("Please enter a decimal number for the buy price.");
@@ -119,6 +127,10 @@ public class InventoryManagementUI {
             System.out.println("Enter the product's buy price:");
             try {
                 productSellPrice = scanner.nextDouble();
+                if (productSellPrice < 0) {
+                    System.out.println("Sell price cannot be negative, please try again.");
+                    continue;
+                }
                 validSellPrice = true;
             } catch (InputMismatchException e) {
                 System.out.println("Please enter a decimal number for the sell price.");
@@ -133,6 +145,10 @@ public class InventoryManagementUI {
             System.out.println("Enter the product's initial stock:");
             try {
                 productInitialStock = scanner.nextInt();
+                if (productInitialStock < 0) {
+                    System.out.println("Initial stock cannot be negative, please try again.");
+                    continue;
+                }
                 validInitialStock = true;
             } catch (InputMismatchException e) {
                 System.out.println("Please enter an integer for the initial stock.");
@@ -184,6 +200,7 @@ public class InventoryManagementUI {
         System.out.println("Enter the ID of the product you want to update:");
         int idToUpdate = scanner.nextInt();
 
+
         System.out.print("""
                 1. Name
                 2. Sell Price
@@ -227,9 +244,27 @@ public class InventoryManagementUI {
                 -------------------
                 """);
 
+        boolean validSupplierId = false;
+        int supplierId = 0;
+        while (!validSupplierId) {
+            UIUtilities.displaySuppliers(supplierManagement);
+            System.out.println("Enter the supplier ID you want to order from:");
+            try {
+                supplierId = scanner.nextInt();
+                if (!supplierManagement.getSuppliers().containsKey(supplierId)) {
+                    System.out.println("Invalid supplier ID, please try again.");
+                    continue;
+                }
+                validSupplierId = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter an integer value for the supplier ID.");
+                scanner.nextLine();
+            }
+        }
+
         boolean anotherEntry = true;
         while (anotherEntry) {
-            UIUtilities.displayProductsToBuy(supplierManagement);
+            UIUtilities.displayProductsToBuyFromSupplier(supplierManagement, supplierId);
 
             int idToOrder = 0;
             int quantityToOrder = 0;
@@ -239,6 +274,10 @@ public class InventoryManagementUI {
                 System.out.println("Enter the ID of the product you want to order:");
                 try {
                     idToOrder = scanner.nextInt();
+                    if (!supplierManagement.getSupplierById(supplierId).getAvailableProducts().contains(productManagement.getProducts().get(idToOrder))) {
+                        System.out.println("Invalid product ID, please try again.");
+                        continue;
+                    }
                     validId = true;
                 } catch (InputMismatchException e) {
                     System.out.println("Please enter an integer.");

@@ -26,8 +26,15 @@ public class MainMenuUI {
     }
 
     public void mainMenu() {
+        // Pre-populate some mock data
         supplierManagement.addSupplier("Example Supplier", "1234567890");
         productManagement.addProduct("Example Product", 10.0, 15.0, 100, 1);
+        productManagement.addProduct("Laptop", 125.0, 150.0, 50, 1);
+        productManagement.addProduct("Cushion", 15.0, 17.0, 200, 1);
+        productManagement.addProduct("TV", 250.0, 300, 100, 1);
+
+        supplierManagement.addSupplier("Example Supplier2", "0987654321");
+        productManagement.addProduct("Example Product2", 10.0, 15.0, 100, 2);
 
         buyOrderManagement.setStatusListener(alertHandler);
         sellOrderManagement.setLowStockListener(alertHandler);
