@@ -9,6 +9,11 @@ public class ProductManagementTests {
     private final SupplierManagement supplierManagement = new SupplierManagement();
     private final ProductManagement productManagement = new ProductManagement(supplierManagement);
 
+    @Before
+    public void setUp() {
+        supplierManagement.addSupplier("Test Supplier", "1234567890");
+    }
+
     @Test
     public void testAddProduct() {
         productManagement.addProduct("Test product", 12.50, 15.10, 55, 1);

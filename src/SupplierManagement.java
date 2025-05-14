@@ -1,8 +1,7 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SupplierManagement {
-    private HashMap<Integer, Supplier> suppliers = new HashMap<>();
+    private final HashMap<Integer, Supplier> suppliers = new HashMap<>();
     private int nextId = 1;
 
     public SupplierManagement() {
@@ -50,7 +49,7 @@ public class SupplierManagement {
         }
     }
 
-    public Supplier getSupperlierById(int id) {
+    public Supplier getSupplierById(int id) {
         Supplier supplier = suppliers.get(id);
         if (supplier != null) {
             return supplier;

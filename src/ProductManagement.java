@@ -10,7 +10,9 @@ public class ProductManagement {
     }
 
     public void addProduct(String name, double buyPrice, double sellPrice, int initialStock, int supplierId) {
-        products.put(nextId, new Product(nextId, supplierId, name, buyPrice, sellPrice, initialStock));
+        Product newProduct = new Product(nextId, supplierId, name, buyPrice, sellPrice, initialStock);
+        products.put(nextId, newProduct);
+        supplierManagement.getSupplierById(supplierId).addAvailableProduct(newProduct);
         nextId++;
     }
 

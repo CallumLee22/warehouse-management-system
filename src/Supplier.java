@@ -4,7 +4,7 @@ public class Supplier {
     private final int id;
     private String name;
     private String phoneNumber;
-    private ArrayList<Product> productsAvailable = new ArrayList<>();
+    private final ArrayList<Product> productsAvailable = new ArrayList<>();
 
     public Supplier(int id, String name, String phoneNumber) {
         this.id = id;
@@ -36,7 +36,7 @@ public class Supplier {
         this.phoneNumber = phoneNumber;
     }
 
-    public void addAvailableProducts(Product product) {
+    public void addAvailableProduct(Product product) {
         this.productsAvailable.add(product);
     }
 }
