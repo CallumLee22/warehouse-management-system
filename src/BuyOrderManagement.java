@@ -13,6 +13,10 @@ public class BuyOrderManagement extends OrderManagement<BuyOrder> {
 
     @Override
     public void createOrder(ArrayList<OrderProductEntry> products) {
+        if (products.isEmpty()) {
+            throw new IllegalArgumentException("Order cannot be empty.");
+        }
+
         for (OrderProductEntry entry : products) {
             if (entry.product() == null) {
                 throw new ProductNotFoundException("Invalid product in order");
@@ -40,8 +44,7 @@ public class BuyOrderManagement extends OrderManagement<BuyOrder> {
     public void acceptDelivery(int orderId) {
         BuyOrder order = getOrders().get(orderId);
         if (order == null) {
-            System.out.println("Order not found.");
-            return;
+            throw new OrderNotFoundException("Order with ID " + orderId + " was not found when accepting delivery");
         }
         order.setStatus(BuyOrderStatus.DELIVERED);
 

@@ -33,6 +33,18 @@ public class BuyOrderManagementTests {
     }
 
     @Test
+    public void testCreateBuyOrder_EmptyProductList() {
+        ArrayList<OrderProductEntry> productsForOrder = new ArrayList<>();
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            buyOrderManagement.createOrder(productsForOrder);
+        });
+
+        assertEquals("Order cannot be empty.", exception.getMessage());
+        assertEquals(0, buyOrderManagement.getOrders().size());
+    }
+
+    @Test
     public void testCreateBuyOrder_InvalidProductId() {
         OrderProductEntry productEntry = new OrderProductEntry(productManagement.getProducts().get(999), 5);
         ArrayList<OrderProductEntry> productsForOrder = new ArrayList<>();
@@ -58,5 +70,47 @@ public class BuyOrderManagementTests {
 
         buyOrderManagement.acceptDelivery(1);
         assertEquals(initialStock + 5, productManagement.getProducts().get(1).getStock());
+    }
+
+    @Test
+    public void testUpdateStock_InvalidProductId() {
+        int initialStock = productManagement.getProducts().get(1).getStock();
+
+        OrderProductEntry productEntry = new OrderProductEntry(productManagement.getProducts().get(999), 5);
+        ArrayList<OrderProductEntry> productsForOrder = new ArrayList<>();
+        productsForOrder.add(productEntry);
+
+        Exception exception = assertThrows(ProductNotFoundException.class, () -> {
+            buyOrderManagement.createOrder(productsForOrder);
+        });
+
+        assertEquals("Invalid product in order", exception.getMessage());
+        assertEquals(initialStock, productManagement.getProducts().get(1).getStock());
+    }
+
+    @Test
+    public void testAcceptDelivery_OrderNotFound() {
+        Exception exception = assertThrows(OrderNotFoundException.class, () -> {
+            buyOrderManagement.acceptDelivery(999);
+        });
+
+        assertEquals("Order with ID 999 was not found when accepting delivery", exception.getMessage());
+    }
+
+    @Test
+    public void testOrderStatusChange() throws InterruptedException {
+        OrderProductEntry productEntry = new OrderProductEntry(productManagement.getProducts().get(1), 5);
+        ArrayList<OrderProductEntry> productsForOrder = new ArrayList<>();
+        productsForOrder.add(productEntry);
+
+        buyOrderManagement.createOrder(productsForOrder);
+
+        assertEquals(BuyOrderStatus.PROCESSING, buyOrderManagement.getOrders().get(1).getStatus());
+
+        Thread.sleep(6000);
+        assertEquals(BuyOrderStatus.SHIPPED, buyOrderManagement.getOrders().get(1).getStatus());
+
+        Thread.sleep(6000);
+        assertEquals(BuyOrderStatus.READY_FOR_DELIVERY, buyOrderManagement.getOrders().get(1).getStatus());
     }
 }
