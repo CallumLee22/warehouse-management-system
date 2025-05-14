@@ -24,7 +24,7 @@ public abstract class OrderManagement<T> {
         if (product != null) {
             int newStock = product.getStock() + quantity;
             product.setStock(newStock);
-            if (product.getStock() <= 20) {
+            if (product.getStock() <= 20 && stockListener != null) {
                 stockListener.onLowStock(product);
             }
         } else {
