@@ -25,13 +25,28 @@ public class ProductManagementTests {
     }
 
     @Test
-    public void testRemoveProduct() {
+    public void testRemoveProduct_ValidId() {
         productManagement.addProduct("Test product", 12.50, 15.10, 55, 1);
         productManagement.removeProduct(1);
 
         HashMap<Integer, Product> products = productManagement.getProducts();
 
         assertEquals(0, products.size());
+    }
+
+    @Test
+    public void testRemoveProduct_InvalidId() {
+        productManagement.addProduct("Test product", 12.50, 15.10, 55, 1);
+
+        Exception exception = assertThrows(ProductNotFoundException.class, () -> {
+            productManagement.removeProduct(999);
+        });
+
+        assertEquals("Inventory product with ID 999 was not found when removing", exception.getMessage());
+
+        HashMap<Integer, Product> products = productManagement.getProducts();
+
+        assertEquals(1, products.size());
     }
 
     @Test

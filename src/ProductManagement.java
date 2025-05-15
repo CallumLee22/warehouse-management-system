@@ -1,7 +1,7 @@
 import java.util.HashMap;
 
 public class ProductManagement {
-    HashMap<Integer, Product> products = new HashMap<>();
+    private final HashMap<Integer, Product> products = new HashMap<>();
     private int nextId = 1;
     private final SupplierManagement supplierManagement;
 
@@ -22,8 +22,8 @@ public class ProductManagement {
 
     public void removeProduct(int id) {
         if (!products.containsKey(id)) {
-            System.out.println("Invalid product ID.");
-            return;
+            throw new ProductNotFoundException(
+                    "Inventory product with ID " + id + " was not found when removing");
         }
         products.remove(id);
     }
