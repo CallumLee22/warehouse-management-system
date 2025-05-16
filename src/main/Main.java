@@ -1,3 +1,5 @@
+package main;
+
 import main.financialReports.FinancialReportManagement;
 import main.inventory.ProductManagement;
 import main.orders.BuyOrderManagement;
