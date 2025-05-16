@@ -134,7 +134,7 @@ public class InventoryManagementUI {
         boolean validSellPrice = false;
 
         while (!validSellPrice) {
-            System.out.println("Enter the product's buy price:");
+            System.out.println("Enter the product's sell price:");
             try {
                 productSellPrice = scanner.nextDouble();
                 if (productSellPrice < 0) {
