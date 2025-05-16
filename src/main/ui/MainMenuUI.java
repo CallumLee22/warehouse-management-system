@@ -10,27 +10,19 @@ import java.util.Scanner;
 
 public class MainMenuUI {
     private final Scanner scanner = new Scanner(System.in);
-    private final SupplierManagement supplierManagement;
-    private final ProductManagement productManagement;
-    private final BuyOrderManagement buyOrderManagement;
-    private final UIAlertHandler alertHandler;
-    private final InventoryManagementUI inventoryManagementUI;
-    private final SupplierManagementUI supplierManagementUI;
-    private final CustomerOrdersUI customerOrdersUI;
-    private final FinancialReportsUI financialReportsUI;
-    private final SellOrderManagement sellOrderManagement;
+    private final SupplierManagement supplierManagement = new SupplierManagement();
+    private final ProductManagement productManagement = new ProductManagement(supplierManagement);
+    private final BuyOrderManagement buyOrderManagement = new BuyOrderManagement(productManagement);
+    private final SellOrderManagement sellOrderManagement = new SellOrderManagement(productManagement);
+    private final FinancialReportManagement financialReportManagement = new FinancialReportManagement(buyOrderManagement, sellOrderManagement);
+    private final UIAlertHandler alertHandler = new UIAlertHandler();
+    private final InventoryManagementUI inventoryManagementUI = new InventoryManagementUI(supplierManagement, productManagement, buyOrderManagement);
+    private final SupplierManagementUI supplierManagementUI = new SupplierManagementUI(supplierManagement);
+    private final CustomerOrdersUI customerOrdersUI = new CustomerOrdersUI(sellOrderManagement, productManagement);
+    private final FinancialReportsUI financialReportsUI = new FinancialReportsUI(financialReportManagement);
 
-    public MainMenuUI(SupplierManagement supplierManagement, ProductManagement productManagement, BuyOrderManagement buyOrderManagement, SellOrderManagement sellOrderManagement, FinancialReportManagement financialReportManagement, UIAlertHandler alertHandler) {
-        this.supplierManagement = supplierManagement;
-        this.productManagement = productManagement;
-        this.buyOrderManagement = buyOrderManagement;
-        this.alertHandler = alertHandler;
-        this.sellOrderManagement = sellOrderManagement;
+    public MainMenuUI() {
 
-        this.inventoryManagementUI = new InventoryManagementUI(supplierManagement, productManagement, buyOrderManagement);
-        this.supplierManagementUI = new SupplierManagementUI(supplierManagement);
-        this.customerOrdersUI = new CustomerOrdersUI(sellOrderManagement, productManagement);
-        this.financialReportsUI = new FinancialReportsUI(financialReportManagement);
     }
 
     public void mainMenu() {
