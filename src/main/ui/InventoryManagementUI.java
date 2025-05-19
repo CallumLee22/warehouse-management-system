@@ -196,9 +196,30 @@ public class InventoryManagementUI {
                 """);
 
         UIUtilities.displayProductsForSale(productManagement);
-        System.out.println("Enter the ID of the product you want to remove:");
-        int userChoice = scanner.nextInt();
-        productManagement.removeProduct(userChoice);
+
+        boolean validId = false;
+        int idToRemove = 0;
+        while (!validId) {
+            System.out.println("Enter the ID of the product you want to remove:");
+            try {
+                idToRemove = scanner.nextInt();
+                if (!productManagement.getProducts().containsKey(idToRemove)) {
+                    System.out.println("Invalid product ID, please try again.");
+                    continue;
+                }
+                validId = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter an integer value for the product ID.");
+                scanner.nextLine();
+            }
+        }
+
+        try{
+            productManagement.removeProduct(idToRemove);
+            System.out.println("Product removed successfully");
+        } catch (ProductNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void updateProductDetailsMenu() {
@@ -208,8 +229,23 @@ public class InventoryManagementUI {
                 -------------------
                 """);
         UIUtilities.displayProductsForSale(productManagement);
-        System.out.println("Enter the ID of the product you want to update:");
-        int idToUpdate = scanner.nextInt();
+
+        boolean validId = false;
+        int idToUpdate = 0;
+        while (!validId) {
+            System.out.println("Enter the ID of the product you want to update:");
+            try {
+                idToUpdate = scanner.nextInt();
+                if (!productManagement.getProducts().containsKey(idToUpdate)) {
+                    System.out.println("Invalid product ID, please try again.");
+                    continue;
+                }
+                validId = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter an integer value for the product ID.");
+                scanner.nextLine();
+            }
+        }
 
 
         System.out.print("""
@@ -241,8 +277,11 @@ public class InventoryManagementUI {
                     System.out.println("Invalid choice, try again");
                     break;
             }
-        } catch (SupplierNotFoundException supplierNotFound) {
-            System.out.println(supplierNotFound.getMessage());
+        } catch (ProductNotFoundException productNotFoundException) {
+            System.out.println(productNotFoundException.getMessage());
+        } catch (InputMismatchException inputMismatchException) {
+            System.out.println("Please enter a valid value.");
+            scanner.nextLine();
         }
     }
 
