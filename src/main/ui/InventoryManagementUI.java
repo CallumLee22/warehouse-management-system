@@ -7,6 +7,7 @@ import main.orders.BuyOrderManagement;
 import main.orders.BuyOrderStatus;
 import main.orders.OrderProductEntry;
 import main.suppliers.SupplierManagement;
+import main.utilities.UIUtilities;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;

@@ -1,8 +1,10 @@
 package main.ui;
 
+import main.inventory.Product;
 import main.inventory.ProductManagement;
 import main.orders.OrderProductEntry;
 import main.orders.SellOrderManagement;
+import main.utilities.UIUtilities;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -86,10 +88,22 @@ public class CustomerOrdersUI {
             UIUtilities.displayProductsForSale(productManagement);
             System.out.println("Enter the ID of the product you want to order:");
             int idToOrder = scanner.nextInt();
-            System.out.println("Enter the quantity you want to order:");
-            int quantityToOrder = scanner.nextInt();
+            Product productToOrder = productManagement.getProducts().get(idToOrder);
 
-            OrderProductEntry orderProductEntry = new OrderProductEntry(productManagement.getProducts().get(idToOrder), quantityToOrder);
+            boolean validQuanity = false;
+            int quantityToOrder = 0;
+            while (!validQuanity) {
+                System.out.println("Enter the quantity you want to order:");
+                quantityToOrder = scanner.nextInt();
+                if (productToOrder.getStock() >= quantityToOrder) {
+                    validQuanity = true;
+                    continue;
+                }
+
+                System.out.println("Not enough stock available, please enter a valid quantity.");
+            }
+
+            OrderProductEntry orderProductEntry = new OrderProductEntry(productToOrder, quantityToOrder);
             orderProducts.add(orderProductEntry);
 
             System.out.println("Do you want to add another product to the order? (y or n)");

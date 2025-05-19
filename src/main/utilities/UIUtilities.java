@@ -1,4 +1,4 @@
-package main.ui;
+package main.utilities;
 
 import main.inventory.Product;
 import main.inventory.ProductManagement;

@@ -2,6 +2,7 @@ package main.ui;
 
 import main.exceptions.SupplierNotFoundException;
 import main.suppliers.SupplierManagement;
+import main.utilities.UIUtilities;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
