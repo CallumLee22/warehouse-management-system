@@ -17,6 +17,12 @@ public class SellOrderManagement extends OrderManagement<SellOrder> {
 
     @Override
     public void createOrder(ArrayList<OrderProductEntry> products) {
+        if (products.isEmpty()) {
+            throw new IllegalArgumentException("Order cannot be empty.");
+        }
+
+        checkInvalidEntry(products, true);
+
         SellOrder order = createOrderInstance(nextOrderId, products);
         orders.put(nextOrderId, order);
         nextOrderId++;

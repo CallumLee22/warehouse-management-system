@@ -68,6 +68,20 @@ public class BuyOrderManagementTests {
     }
 
     @Test
+    public void testCreateBuyOrder_NegativeQuantity() {
+        OrderProductEntry productEntry = new OrderProductEntry(productManagement.getProducts().get(1), -5);
+        ArrayList<OrderProductEntry> productsForOrder = new ArrayList<>();
+        productsForOrder.add(productEntry);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            buyOrderManagement.createOrder(productsForOrder);
+        });
+
+        assertEquals("Invalid quantity in order", exception.getMessage());
+        assertEquals(0, buyOrderManagement.getOrders().size());
+    }
+
+    @Test
     public void testUpdateStock_ValidProductId() {
         int initialStock = productManagement.getProducts().get(1).getStock();
 

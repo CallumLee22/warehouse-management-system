@@ -10,6 +10,15 @@ public class BuyOrder extends Order {
         this.status = BuyOrderStatus.PROCESSING;
     }
 
+    @Override
+    protected double calculateTotalPrice() {
+        double total = 0;
+        for (OrderProductEntry entry : products) {
+            total += entry.product().getBuyPrice() * entry.quantity();
+        }
+        return total;
+    }
+
     public BuyOrderStatus getStatus() {
         return status;
     }

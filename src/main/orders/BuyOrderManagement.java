@@ -1,7 +1,6 @@
 package main.orders;
 
 import main.exceptions.OrderNotFoundException;
-import main.exceptions.ProductNotFoundException;
 
 import main.inventory.ProductManagement;
 
@@ -24,12 +23,8 @@ public class BuyOrderManagement extends OrderManagement<BuyOrder> {
             throw new IllegalArgumentException("Order cannot be empty.");
         }
 
-        for (OrderProductEntry entry : products) {
-            if (entry.product() == null) {
-                throw new ProductNotFoundException("Invalid product in order");
+        checkInvalidEntry(products, false);
 
-            }
-        }
         BuyOrder order = createOrderInstance(nextOrderId, products);
         orders.put(nextOrderId, order);
         nextOrderId++;
