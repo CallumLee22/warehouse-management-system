@@ -3,6 +3,7 @@ package main.ui;
 import main.exceptions.SupplierNotFoundException;
 import main.suppliers.SupplierManagement;
 import main.utilities.UIUtilities;
+import main.utilities.Utilities;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -76,9 +77,18 @@ public class SupplierManagementUI {
 
         String supplierName = scanner.nextLine();
 
-        System.out.println("Enter the suppliers phone number:");
+        boolean validPhoneNumber = false;
+        String supplierPhoneNumber = "";
+        while (!validPhoneNumber) {
+            System.out.println("Enter the supplier's phone number:");
+            supplierPhoneNumber = scanner.nextLine();
 
-        String supplierPhoneNumber = scanner.nextLine();
+            if (Utilities.isValidPhoneNumber(supplierPhoneNumber)) {
+                validPhoneNumber = true;
+            } else {
+                System.err.println("Invalid phone number, please enter a 10-digit number");
+            }
+        }
 
         while (true) {
             System.out.println("Do you want to add a supplier with these details? (y or n)");
@@ -92,11 +102,13 @@ public class SupplierManagementUI {
                 break;
 
             } else if (confirmation.equalsIgnoreCase("n")) {
-                addSupplierMenu();
+                break;
             }
 
-            System.out.println("Invalid input, try again");
+            System.err.println("Invalid input, try again");
         }
+
+        System.out.println("Supplier added successfully.");
     }
 
     private void updateSupplierMenu() {
@@ -115,20 +127,37 @@ public class SupplierManagementUI {
             System.out.println("Enter the ID of the supplier you want to update:");
             try {
                 idToUpdate = scanner.nextInt();
-                validInput = true;
+                scanner.nextLine();
+                if(supplierManagement.getSuppliers().containsKey(idToUpdate)) {
+                    validInput = true;
+                    continue;
+                }
+
+                System.err.println("Please enter an ID as listed above");
             } catch (InputMismatchException e) {
-                System.out.println("Please enter an integer value for the ID.");
+                System.err.println("Please enter an integer value for the ID.");
                 scanner.nextLine();
             }
         }
 
-        System.out.print("""
+        boolean validUpdateChoice = false;
+        String updateSupplierMenuChoice = "1";
+        while (!validUpdateChoice) {
+            System.out.print("""
                 1. Name
                 2. Phone Number
                 Select what you would like to update:
                 """);
-        String updateSupplierMenuChoice = scanner.nextLine();
-        scanner.nextLine();
+            updateSupplierMenuChoice = scanner.nextLine();
+            scanner.reset();
+
+            if (updateSupplierMenuChoice.equals("1") || updateSupplierMenuChoice.equals("2")) {
+                validUpdateChoice = true;
+                continue;
+            }
+
+            System.err.println("Invalid choice, try again");
+        }
 
         try {
             switch (updateSupplierMenuChoice) {
@@ -138,8 +167,18 @@ public class SupplierManagementUI {
                     supplierManagement.updateName(idToUpdate, newName);
                     break;
                 case "2":
-                    System.out.println("Enter the new phone number:");
-                    String newPhoneNumber = scanner.nextLine();
+
+                    String newPhoneNumber;
+                    while (true) {
+                        System.out.println("Enter the new phone number:");
+                        newPhoneNumber = scanner.nextLine();
+
+                        if (Utilities.isValidPhoneNumber(newPhoneNumber)) {
+                            break;
+                        }
+
+                        System.err.println("Invalid phone number, please enter a 10-digit number");
+                    }
                     supplierManagement.updatePhoneNumber(idToUpdate, newPhoneNumber);
                     break;
                 default:
@@ -147,8 +186,10 @@ public class SupplierManagementUI {
                     break;
             }
         } catch (SupplierNotFoundException supplierNotFound) {
-            System.out.println(supplierNotFound.getMessage());
+            System.err.println(supplierNotFound.getMessage());
         }
+
+        System.out.println("Supplier updated successfully.");
     }
 
     private void removeSupplierMenu() {
@@ -159,12 +200,29 @@ public class SupplierManagementUI {
                 """);
 
         UIUtilities.displaySuppliers(supplierManagement);
-        System.out.println("Enter the ID of the supplier you want to remove:");
-        try {
-            int userChoice = scanner.nextInt();
-            supplierManagement.removeSupplier(userChoice);
-        } catch (SupplierNotFoundException supplierNotFound) {
-            System.out.println(supplierNotFound.getMessage());
+
+        boolean validInput = false;
+        while (!validInput) {
+            System.out.println("Enter the ID of the supplier you want to remove:");
+            try {
+                int userChoice = scanner.nextInt();
+
+                if (!supplierManagement.getSuppliers().containsKey(userChoice)) {
+                    System.err.println("Please enter an ID as listed above");
+                    continue;
+                }
+
+                supplierManagement.removeSupplier(userChoice);
+                validInput = true;
+            } catch (SupplierNotFoundException supplierNotFound) {
+                System.err.println(supplierNotFound.getMessage());
+                scanner.nextLine();
+            } catch (InputMismatchException e) {
+                System.err.println("Please enter an integer value for the ID.");
+                scanner.nextLine();
+            }
         }
+
+        System.out.println("Supplier removed successfully.");
     }
 }

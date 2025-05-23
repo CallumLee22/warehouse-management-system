@@ -1,5 +1,6 @@
 package main.ui;
 
+import main.exceptions.OrderNotFoundException;
 import main.exceptions.ProductNotFoundException;
 import main.exceptions.SupplierNotFoundException;
 import main.inventory.ProductManagement;
@@ -178,6 +179,7 @@ public class InventoryManagementUI {
 
             if (confirmation.equalsIgnoreCase("y")) {
                 productManagement.addProduct(productName, productBuyPrice, productSellPrice, productInitialStock, supplierId);
+                System.out.println("Product added successfully");
                 break;
 
             } else if (confirmation.equalsIgnoreCase("n")) {
@@ -248,40 +250,63 @@ public class InventoryManagementUI {
         }
 
 
-        System.out.print("""
+        boolean validDetails = false;
+        int updateProductDetailsMenuChoice = 0;
+        while (!validDetails) {
+            System.out.print("""
                 1. Name
                 2. Sell Price
                 3. Buy Price
                 Select what you would like to update:
                 """);
-        String updateProductDetailsMenuChoice = scanner.nextLine();
-        scanner.nextLine();
-
-        System.out.println("Enter the new value:");
-
-        try {
-            switch (updateProductDetailsMenuChoice) {
-                case "1":
-                    String newName = scanner.nextLine();
-                    productManagement.updateName(idToUpdate, newName);
-                    break;
-                case "2":
-                    double newSellPrice = scanner.nextDouble();
-                    productManagement.updateSellPrice(idToUpdate, newSellPrice);
-                    break;
-                case "3":
-                    double newBuyPrice = scanner.nextDouble();
-                    productManagement.updateBuyPrice(idToUpdate, newBuyPrice);
-                    break;
-                default:
-                    System.out.println("Invalid choice, try again");
-                    break;
+            try {
+                updateProductDetailsMenuChoice = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                System.err.println("Please enter an integer value for the choice.");
+                scanner.nextLine();
+                continue;
             }
-        } catch (ProductNotFoundException productNotFoundException) {
-            System.out.println(productNotFoundException.getMessage());
-        } catch (InputMismatchException inputMismatchException) {
-            System.out.println("Please enter a valid value.");
             scanner.nextLine();
+
+            if (updateProductDetailsMenuChoice < 1 || updateProductDetailsMenuChoice > 3) {
+                System.err.println("Invalid choice, please try again.");
+                continue;
+            }
+
+            validDetails = true;
+        }
+
+        boolean validValue = false;
+        while (!validValue) {
+            System.out.println("Enter the new value:");
+
+            try {
+                switch (updateProductDetailsMenuChoice) {
+                    case 1:
+                        String newName = scanner.nextLine();
+                        productManagement.updateName(idToUpdate, newName);
+                        validValue = true;
+                        break;
+                    case 2:
+                        double newSellPrice = scanner.nextDouble();
+                        productManagement.updateSellPrice(idToUpdate, newSellPrice);
+                        validValue = true;
+                        break;
+                    case 3:
+                        double newBuyPrice = scanner.nextDouble();
+                        productManagement.updateBuyPrice(idToUpdate, newBuyPrice);
+                        validValue = true;
+                        break;
+                    default:
+                        System.err.println("Invalid choice, try again");
+                        break;
+                }
+            } catch (ProductNotFoundException productNotFoundException) {
+                System.err.println(productNotFoundException.getMessage());
+            } catch (InputMismatchException inputMismatchException) {
+                System.err.println("Please enter a valid value.");
+                scanner.nextLine();
+            }
         }
     }
 
@@ -302,12 +327,12 @@ public class InventoryManagementUI {
             try {
                 supplierId = scanner.nextInt();
                 if (!supplierManagement.getSuppliers().containsKey(supplierId)) {
-                    System.out.println("Invalid supplier ID, please try again.");
+                    System.err.println("Invalid supplier ID, please try again.");
                     continue;
                 }
                 validSupplierId = true;
             } catch (InputMismatchException e) {
-                System.out.println("Please enter an integer value for the supplier ID.");
+                System.err.println("Please enter an integer value for the supplier ID.");
                 scanner.nextLine();
             }
         }
@@ -325,12 +350,12 @@ public class InventoryManagementUI {
                 try {
                     idToOrder = scanner.nextInt();
                     if (!supplierManagement.getSupplierById(supplierId).getAvailableProducts().contains(productManagement.getProducts().get(idToOrder))) {
-                        System.out.println("Invalid product ID, please try again.");
+                        System.err.println("Invalid product ID, please try again.");
                         continue;
                     }
                     validId = true;
                 } catch (InputMismatchException e) {
-                    System.out.println("Please enter an integer.");
+                    System.err.println("Please enter an integer.");
                     scanner.nextLine();
                 }
             }
@@ -343,7 +368,7 @@ public class InventoryManagementUI {
                     quantityToOrder = scanner.nextInt();
                     validQuantity = true;
                 } catch (InputMismatchException e) {
-                    System.out.println("Please enter an integer.");
+                    System.err.println("Please enter an integer.");
                     scanner.nextLine();
                 }
             }
@@ -358,14 +383,14 @@ public class InventoryManagementUI {
             if (confirmation.equalsIgnoreCase("n")) {
                 anotherEntry = false;
             } else if (!confirmation.equalsIgnoreCase("y")) {
-                System.out.println("Invalid input, try again");
+                System.err.println("Invalid input, try again");
             }
         }
 
         try {
             buyOrderManagement.createOrder(orderProducts);
         } catch (ProductNotFoundException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
             return;
         }
 
@@ -423,11 +448,16 @@ public class InventoryManagementUI {
                             orderId = scanner.nextInt();
                             validInput = true;
                         } catch (InputMismatchException e) {
-                            System.out.println("Please enter an integer.");
+                            System.err.println("Please enter an integer.");
                             scanner.nextLine();
                         }
                     }
-                    buyOrderManagement.acceptDelivery(orderId);
+
+                    try {
+                        buyOrderManagement.acceptDelivery(orderId);
+                    } catch (OrderNotFoundException e) {
+                        System.err.println(e.getMessage());
+                    }
                     break;
                 case "3":
                     return;

@@ -7,6 +7,7 @@ import main.orders.SellOrderManagement;
 import main.utilities.UIUtilities;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CustomerOrdersUI {
@@ -86,15 +87,41 @@ public class CustomerOrdersUI {
         boolean anotherEntry = true;
         while (anotherEntry) {
             UIUtilities.displayProductsForSale(productManagement);
-            System.out.println("Enter the ID of the product you want to order:");
-            int idToOrder = scanner.nextInt();
+
+            boolean validProduct = false;
+            int idToOrder = 0;
+            while(!validProduct) {
+                System.out.println("Enter the ID of the product you want to order:");
+
+                try {
+                    idToOrder = scanner.nextInt();
+
+                    if (!productManagement.getProducts().containsKey(idToOrder)) {
+                        System.out.println("Please enter a valid ID as listed above");
+                        continue;
+                    }
+
+                    validProduct = true;
+
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input, please enter a number.");
+                    scanner.nextLine();
+                }
+            }
+
             Product productToOrder = productManagement.getProducts().get(idToOrder);
 
             boolean validQuanity = false;
             int quantityToOrder = 0;
             while (!validQuanity) {
                 System.out.println("Enter the quantity you want to order:");
-                quantityToOrder = scanner.nextInt();
+                try {
+                    quantityToOrder = scanner.nextInt();
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input, please enter a number.");
+                    scanner.nextLine();
+                    continue;
+                }
                 if (productToOrder.getStock() >= quantityToOrder) {
                     validQuanity = true;
                     continue;
