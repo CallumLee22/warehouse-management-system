@@ -4,8 +4,17 @@ import main.inventory.ProductManagement;
 
 import java.util.ArrayList;
 
+/**
+ * Manages sell orders in the inventory system.
+ * Extends the OrderManagement class and provides functionality specific to sell orders.
+ */
 public class SellOrderManagement extends OrderManagement<SellOrder> {
 
+    /**
+     * Constructs a SellOrderManagement with the specified ProductManagement instance.
+     *
+     * @param productManagement the ProductManagement instance to manage products
+     */
     public SellOrderManagement(ProductManagement productManagement) {
         super(productManagement);
     }

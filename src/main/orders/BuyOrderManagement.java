@@ -9,10 +9,19 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Manages buy orders in the inventory system.
+ * Extends the OrderManagement class and provides specific functionality for buy orders.
+ */
 public class BuyOrderManagement extends OrderManagement<BuyOrder> {
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private BuyOrderStatusListener statusListener;
 
+    /**
+     * Constructs a BuyOrderManagement instance with the specified ProductManagement.
+     *
+     * @param productManagement     The ProductManagement instance to use for product operations
+     */
     public BuyOrderManagement(ProductManagement productManagement) {
         super(productManagement);
     }
@@ -43,6 +52,11 @@ public class BuyOrderManagement extends OrderManagement<BuyOrder> {
         return new BuyOrder(orderId, products);
     }
 
+    /**
+     * Accepts delivery of a buy order by updating its status and adjusting the stock of products.
+     *
+     * @param orderId   The ID of the order to accept delivery for
+     */
     public void acceptDelivery(int orderId) {
         BuyOrder order = getOrders().get(orderId);
         if (order == null) {
@@ -69,6 +83,11 @@ public class BuyOrderManagement extends OrderManagement<BuyOrder> {
         }
     }
 
+    /**
+     * Sets a listener to be notified of buy order status changes.
+     *
+     * @param listener The listener to set
+     */
     public void setStatusListener(BuyOrderStatusListener listener) {
         this.statusListener = listener;
     }

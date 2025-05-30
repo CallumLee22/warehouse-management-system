@@ -10,17 +10,30 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * CustomerOrdersUI is a user interface class that allows users to manage customer orders.
+ * It provides options to view existing orders and create new orders.
+ */
 public class CustomerOrdersUI {
     private final Scanner scanner = new Scanner(System.in);
     private final SellOrderManagement sellOrderManagement;
     private final ProductManagement productManagement;
 
+    /**
+     * Constructor for CustomerOrdersUI.
+     *
+     * @param sellOrderManagement the SellOrderManagement instance to manage customer orders
+     * @param productManagement   the ProductManagement instance to manage products
+     */
     public CustomerOrdersUI(SellOrderManagement sellOrderManagement, ProductManagement productManagement) {
         this.sellOrderManagement = sellOrderManagement;
         this.productManagement = productManagement;
 
     }
 
+    /**
+     * Displays the customer orders menu and handles user input for managing customer orders.
+     */
     public void customerOrdersMenu() {
         while (true) {
             System.out.print("""
