@@ -28,7 +28,7 @@ jobs:
         run: jar cfe warehouse-management-system.jar main.Main -C out .
 
       - name: Upload JAR artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3.1.0
         with:
           name: warehouse-management-system
           path: warehouse-management-system.jar
