@@ -5,14 +5,28 @@ import main.financialReports.FinancialReportManagement;
 
 import java.util.Scanner;
 
+/**
+ * FinancialReportsUI is a user interface class that allows users to view and create financial reports.
+ * It provides a menu-driven interface for interacting with financial reports.
+ */
 public class FinancialReportsUI {
     private final Scanner scanner = new Scanner(System.in);
     private final FinancialReportManagement financialReportManagement;
 
+    /**
+     * Constructor for FinancialReportsUI.
+     * Initializes the financial report management system.
+     *
+     * @param financialReportManagement The financial report management instance to be used.
+     */
     public FinancialReportsUI(FinancialReportManagement financialReportManagement) {
         this.financialReportManagement = financialReportManagement;
     }
 
+    /**
+     * Displays the financial reports menu and handles user input.
+     * Provides options to view reports, create a report, or return to the main menu.
+     */
     public void financialReportsMenu() {
         while (true) {
             System.out.print("""

@@ -2,7 +2,6 @@ package main.ui;
 
 import main.exceptions.OrderNotFoundException;
 import main.exceptions.ProductNotFoundException;
-import main.exceptions.SupplierNotFoundException;
 import main.inventory.ProductManagement;
 import main.orders.BuyOrderManagement;
 import main.orders.BuyOrderStatus;
@@ -14,6 +13,10 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * InventoryManagementUI class provides a user interface for managing inventory operations.
+ * It allows users to view, add, remove, and update products, order stock, and view deliveries.
+ */
 public class InventoryManagementUI {
 
     private final Scanner scanner = new Scanner(System.in);
@@ -21,6 +24,13 @@ public class InventoryManagementUI {
     private final ProductManagement productManagement;
     private final BuyOrderManagement buyOrderManagement;
 
+    /**
+     * Constructor for InventoryManagementUI.
+     *
+     * @param supplierManagement the SupplierManagement instance to manage suppliers
+     * @param productManagement  the ProductManagement instance to manage products
+     * @param buyOrderManagement the BuyOrderManagement instance to manage buy orders
+     */
     public InventoryManagementUI(SupplierManagement supplierManagement, ProductManagement productManagement, BuyOrderManagement buyOrderManagement) {
         this.supplierManagement = supplierManagement;
         this.productManagement = productManagement;
@@ -28,6 +38,9 @@ public class InventoryManagementUI {
 
     }
 
+    /**
+     * Displays the inventory management menu and handles user input for inventory operations.
+     */
     public void inventoryManagementMenu() {
         while (true) {
             System.out.print("""

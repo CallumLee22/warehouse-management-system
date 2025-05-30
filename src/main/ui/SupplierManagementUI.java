@@ -8,15 +8,27 @@ import main.utilities.Utilities;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * SupplierManagementUI class provides the user interface for managing suppliers in the Warehouse Management System.
+ * It allows users to view, add, update, and remove suppliers.
+ */
 public class SupplierManagementUI {
 
     private final Scanner scanner = new Scanner(System.in);
     private final SupplierManagement supplierManagement;
 
+    /**
+     * Constructor for SupplierManagementUI.
+     *
+     * @param supplierManagement The SupplierManagement instance to manage suppliers.
+     */
     public SupplierManagementUI(SupplierManagement supplierManagement) {
         this.supplierManagement = supplierManagement;
     }
 
+    /**
+     * Displays the supplier management menu and handles user input to navigate through supplier-related functionalities.
+     */
     public void supplierManagementMenu() {
         while (true) {
             System.out.print("""

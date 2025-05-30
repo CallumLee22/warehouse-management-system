@@ -8,6 +8,11 @@ import main.suppliers.SupplierManagement;
 
 import java.util.Scanner;
 
+/**
+ * MainMenuUI class provides the main menu interface for the Warehouse Management System.
+ * It allows users to navigate through different functionalities such as Inventory Management,
+ * Supplier Management, Customer Orders, and Financial Reports.
+ */
 public class MainMenuUI {
     private final Scanner scanner = new Scanner(System.in);
     private final SupplierManagement supplierManagement = new SupplierManagement();
@@ -21,10 +26,16 @@ public class MainMenuUI {
     private final CustomerOrdersUI customerOrdersUI = new CustomerOrdersUI(sellOrderManagement, productManagement);
     private final FinancialReportsUI financialReportsUI = new FinancialReportsUI(financialReportManagement);
 
+    /**
+     * Constructor for MainMenuUI.
+     */
     public MainMenuUI() {
 
     }
 
+    /**
+     * Displays the main menu and handles user input to navigate through the system.
+     */
     public void mainMenu() {
         // Pre-populate some mock data
         supplierManagement.addSupplier("Example Supplier", "1234567890");
