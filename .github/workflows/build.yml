@@ -27,8 +27,22 @@ jobs:
       - name: Create JAR file
         run: jar cfe warehouse-management-system.jar main.Main -C out .
 
-      - name: Upload JAR artifact
-        uses: actions/upload-artifact@v3.1.0
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: warehouse-management-system
-          path: warehouse-management-system.jar
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+
+      - name: Upload JAR to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          asset_path: warehouse-management-system.jar
+          asset_name: warehouse-management-system.jar
+          asset_content_type: application/java-archive
