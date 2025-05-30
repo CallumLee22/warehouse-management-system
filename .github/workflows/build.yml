@@ -1,0 +1,34 @@
+name: Build and Package Java Application
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+
+      - name: Compile Java files
+        run: javac -d out $(find src/main -name "*.java")
+
+      - name: Create JAR file
+        run: jar cfe warehouse-management-system.jar main.Main -C out .
+
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: warehouse-management-system
+          path: warehouse-management-system.jar
