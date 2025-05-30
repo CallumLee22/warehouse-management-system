@@ -37,13 +37,4 @@ jobs:
           release_name: Release ${{ github.ref_name }}
           draft: false
           prerelease: false
-
-      - name: Upload JAR to Release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref_name }}
-          asset_path: warehouse-management-system.jar
-          asset_name: warehouse-management-system.jar
-          asset_content_type: application/java-archive
+          artifacts: warehouse-management-system.jar
